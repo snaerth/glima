@@ -1,0 +1,23 @@
+@import "./styles/variables.scss";
+
+.emailButton {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+}
+
+@media only screen and (min-width: $page-width-ipad) {
+  .emailButton {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad-landscape) {
+  .emailButton {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+  }
+}

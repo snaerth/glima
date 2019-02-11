@@ -1,0 +1,31 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 12px 0;
+  margin: 30px 0;
+  overflow-x: scroll;
+  overflow-y: hidden;
+
+  li {
+    display: inline;
+
+    &.active a {
+      color: rgba(0, 0, 0, 0.87);
+      background-color: #00bcd4;
+    }
+  }
+
+  a {
+    display: inline;
+    padding: 8px 14px;
+    color: rgba(0, 0, 0, 0.87);
+    cursor: pointer;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: background-color 0.15s;
+
+    &:hover:not(.active) {
+      background-color: rgba(0, 0, 0, 0.14);
+    }
+  }
+}

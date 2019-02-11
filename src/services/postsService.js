@@ -1,7 +1,7 @@
 import axois from "axios";
 import config from "../config";
 
-const { API_URL } = config;
+const { API_URL, POST_PER_PAGE } = config;
 
 /**
  * Gets wordpress post
@@ -10,7 +10,9 @@ const { API_URL } = config;
  */
 export async function fetchPost(id) {
   try {
-    const { data } = await axois.get(`${API_URL}/wp-json/wp/v2/posts/${id}`);
+    const { data } = await axois.get(
+      `${API_URL}/wp-json/wp/v2/posts/${id}?_embed`
+    );
 
     return data;
   } catch (error) {
@@ -20,13 +22,23 @@ export async function fetchPost(id) {
 
 /**
  * Gets wordpress posts
+ *
+ * @param {Number} page - page number
  * @returns {Array} wordpress posts array
  */
-export default async function fetchPosts() {
+export default async function fetchPosts(page) {
   try {
-    const { data } = await axois.get(`${API_URL}/wp-json/wp/v2/posts?_embed`);
+    const response = await axois.get(
+      `${API_URL}/wp-json/wp/v2/posts?_embed&page=${
+        page >= 1 ? page : 1
+      }&per_page=${POST_PER_PAGE}`
+    );
 
-    return data;
+    return {
+      data: response.data,
+      totalPages: response.headers["x-wp-totalpages"],
+      postsSize: response.headers["x-wp-total"]
+    };
   } catch (error) {
     return error;
   }

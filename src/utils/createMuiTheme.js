@@ -1,15 +1,38 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
-import pink from '@material-ui/core/colors/pink';
+import { createMuiTheme } from "@material-ui/core/styles";
+import blue from "@material-ui/core/colors/blue";
+import pink from "@material-ui/core/colors/pink";
 
 // Create a theme instance.
 export default createMuiTheme({
   typography: {
     useNextVariants: true,
+    fontSize: 16,
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"'
+    ].join(",")
   },
   palette: {
     primary: blue,
-    accent: pink,
-    type: 'light',
+    secondary: pink
   },
+  overrides: {
+    MuiTooltip: {
+      tooltip: {
+        fontSize: "2em",
+        opacity: 1,
+        backgroundColor: "#fff",
+        boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
+      }
+    }
+  }
 });
