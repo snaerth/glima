@@ -1,0 +1,3 @@
+export const SET_PHOTOS = "SET_PHOTOS";
+export const SET_PHOTOS_ERROR = "SET_PHOTOS_ERROR";
+export const SET_PHOTOS_LOADING = "SET_PHOTOS_LOADING";

@@ -2,62 +2,64 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import getPosts, { setPostsLoading } from "../../actions/posts";
-import Posts from "../../components/Posts";
-import Container from "../../components/Container";
-import s from "./Home.module.scss";
+import getPhotos, { setPhotosLoading } from "../../actions/photos";
+import ImageGridList from "../../components/ImageGridList";
+import s from "./Photos.module.scss";
 
-class Home extends PureComponent {
+class Photos extends PureComponent {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    posts: PropTypes.array.isRequired,
+    photos: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.bool
   };
 
   componentDidMount() {
     const { actions } = this.props;
-    actions.setPostsLoading();
-    actions.getPosts();
+    actions.setPhotosLoading();
+    actions.getPhotos("glima");
   }
 
   renderLoading() {
     return (
-      <Container className={s.loadingContainer}>
+      <div className={classNames(s.container, s.loadingContainer)}>
         <CircularProgress />
-        <p>Sæki fréttir...</p>
-      </Container>
+        <p>Sæki myndir...</p>
+      </div>
     );
   }
 
-  renderNoPosts() {
+  renderNoPhotos() {
     return (
-      <Container className={s.textCenter}>
-        <h1>Engin frétt fannst</h1>
-      </Container>
+      <div className={classNames(s.container, s.textCenter)}>
+        <h1>Engar myndir fundust</h1>
+      </div>
     );
   }
 
   render() {
-    const { posts, error, loading } = this.props;
+    const { photos, error, loading } = this.props;
 
     if (loading) {
       return this.renderLoading();
     }
 
     if (error) {
-      return this.renderNoPosts();
+      return this.renderNoPhotos();
     }
 
-    if (!posts) {
-      return this.renderNoPosts();
+    if (!photos || photos.length === 0) {
+      return this.renderNoPhotos();
     }
 
     return (
-      <Container>
-        <Posts posts={posts} />
-      </Container>
+      <div className={s.container}>
+        {photos.map(data => (
+          <ImageGridList key={data.id} photos={data.gallery_data.gallery} />
+        ))}
+      </div>
     );
   }
 }
@@ -70,11 +72,11 @@ class Home extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    blog: { posts, error, loading }
+    photos: { photos, error, loading }
   } = state;
 
   return {
-    posts,
+    photos,
     error,
     loading
   };
@@ -88,11 +90,11 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ getPosts, setPostsLoading }, dispatch)
+    actions: bindActionCreators({ getPhotos, setPhotosLoading }, dispatch)
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home);
+)(Photos);

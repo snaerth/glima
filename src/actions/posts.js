@@ -41,9 +41,6 @@ export function setPostsPage(page) {
 function getPosts(pageNumber = 1) {
   return async dispatch => {
     try {
-      if (pageNumber > 1) {
-      }
-
       const timer = new Timer();
       timer.start();
 

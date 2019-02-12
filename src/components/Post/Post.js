@@ -4,7 +4,6 @@ import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import MediaQuery from "react-responsive";
-import CardHeader from "@material-ui/core/CardHeader";
 import { withStyles } from "@material-ui/core/styles";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
@@ -23,7 +22,11 @@ const styles = {
     padding: "16px 0"
   },
   title: {
-    fontWeight: 700
+    fontWeight: 700,
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline"
+    }
   }
 };
 
@@ -51,7 +54,7 @@ class Post extends PureComponent {
     await actions.setActivePost(data);
 
     // Navigates user to /post route
-    history.push(`/post/${data.id}`);
+    history.push(`/frett/${data.id}`);
   };
 
   render() {
@@ -72,11 +75,20 @@ class Post extends PureComponent {
     return (
       <div className={s.card}>
         <MediaQuery maxWidth={480}>
-          <CardHeader
-            title={title.rendered}
-            subheader={formattedDate}
-            className={classes.root}
-          />
+          <Typography
+            variant="h6"
+            className={classes.title}
+            onClick={this.readMoreClickHandler}
+          >
+            <span dangerouslySetInnerHTML={{ __html: title.rendered }} />
+          </Typography>
+          <Typography
+            color="textSecondary"
+            component="span"
+            className={s.dateMobile}
+          >
+            {formattedDate}
+          </Typography>
           {img && (
             <CardMedia
               alt={featuredmedia[0].alt_text || title.rendered}
@@ -89,7 +101,12 @@ class Post extends PureComponent {
         <div className={s.cardContent}>
           <div className={s.content}>
             <MediaQuery minWidth={480}>
-              <Typography gutterBottom variant="h6" className={classes.title}>
+              <Typography
+                gutterBottom
+                variant="h6"
+                className={classes.title}
+                onClick={this.readMoreClickHandler}
+              >
                 <span dangerouslySetInnerHTML={{ __html: title.rendered }} />
               </Typography>
               <Typography color="textSecondary" component="span">
@@ -114,37 +131,39 @@ class Post extends PureComponent {
           </MediaQuery>
         </div>
         <div className={s.footer}>
-          <div className={s.footerLeft}>
-            <Tooltip
-              interactive
-              open
-              title={
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={author.name}
-                      src={author["avatar_urls"]["96"]}
-                      className={s.bigAvatar}
+          <MediaQuery minWidth={480}>
+            <div className={s.footerLeft}>
+              <Tooltip
+                interactive
+                open
+                title={
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={author.name}
+                        src={author["avatar_urls"]["96"]}
+                        className={s.bigAvatar}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={author.name}
+                      secondary={author.description}
                     />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={author.name}
-                    secondary={author.description}
-                  />
-                </ListItem>
-              }
-            >
-              <span>
-                <Typography color="secondary" component="span" inline>
-                  {author.name}{" "}
-                </Typography>
-                <Typography color="textSecondary" component="span" inline>
-                  {" "}
-                  skrifar
-                </Typography>
-              </span>
-            </Tooltip>
-          </div>
+                  </ListItem>
+                }
+              >
+                <span>
+                  <Typography color="primary" component="span" inline>
+                    {author.name}{" "}
+                  </Typography>
+                  <Typography color="textSecondary" component="span" inline>
+                    {" "}
+                    skrifar
+                  </Typography>
+                </span>
+              </Tooltip>
+            </div>
+          </MediaQuery>
           <div>
             <Button size="small" color="primary">
               Deila

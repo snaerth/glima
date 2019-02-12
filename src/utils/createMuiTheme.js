@@ -6,7 +6,7 @@ import pink from "@material-ui/core/colors/pink";
 export default createMuiTheme({
   typography: {
     useNextVariants: true,
-    fontSize: 16,
+    fontSize: 18,
     // Use the system font instead of the default Roboto font.
     fontFamily: [
       "-apple-system",
@@ -29,9 +29,18 @@ export default createMuiTheme({
     MuiTooltip: {
       tooltip: {
         fontSize: "2em",
-        opacity: 1,
-        backgroundColor: "#fff",
+        minWidth: "360px",
+        backgroundColor: pink["400"],
         boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
+      },
+      popper: {
+        opacity: 1
+      }
+    },
+    MuiListItemText: {
+      primary: {
+        whiteSpace: "nowrap",
+        fontWeight: 700
       }
     }
   }

@@ -5,6 +5,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import ScrollToTop from "./components/ScrollToTop";
 import HomeRoute from "./routes/Home";
 import PostRoute from "./routes/Post";
+import PhotosRoute from "./routes/Photos";
 import Header from "./components/Header";
 import config from "./config";
 import s from "./App.module.scss";
@@ -19,7 +20,8 @@ const App = () => (
       <ScrollToTop>
         <Header />
         <Route exact path="/" component={HomeRoute} />
-        <Route path="/post/:id" component={PostRoute} />
+        <Route path="/frett/:id" component={PostRoute} />
+        <Route path="/myndir" component={PhotosRoute} />
       </ScrollToTop>
     </Router>
     <div className={s.emailButton}>

@@ -3,10 +3,12 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import MediaQuery from "react-responsive";
 import { withStyles } from "@material-ui/core/styles";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -22,7 +24,11 @@ const styles = {
   },
   title: {
     marginTop: "20px",
-    fontWeight: 700
+    fontWeight: 700,
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline"
+    }
   }
 };
 
@@ -50,7 +56,7 @@ class PostBig extends PureComponent {
     await actions.setActivePost(data);
 
     // Navigates user to /post route
-    history.push(`/post/${data.id}`);
+    history.push(`/frett/${data.id}`);
   };
 
   render() {
@@ -79,38 +85,56 @@ class PostBig extends PureComponent {
           />
         )}
 
-        <Typography gutterBottom variant="h4" className={classes.title}>
+        <Typography
+          gutterBottom
+          variant="h4"
+          className={classes.title}
+          onClick={this.readMoreClickHandler}
+        >
           <span dangerouslySetInnerHTML={{ __html: title.rendered }} />
         </Typography>
         <Typography component="span">
           <span dangerouslySetInnerHTML={{ __html: excerpt.rendered }} />
         </Typography>
+
         <div className={s.footer}>
-          <div className={s.footerLeft}>
-            <List className={s.author}>
-              <ListItem>
-                <Tooltip
-                  title={
-                    <React.Fragment>
-                      <Typography color="inherit" variant="h6">
-                        {author.name}
-                      </Typography>
-                      <Typography color="inherit">
-                        {author.description}
-                      </Typography>
-                    </React.Fragment>
-                  }
-                >
-                  <Avatar
-                    alt={author.name}
-                    src={author["avatar_urls"]["96"]}
-                    className={s.bigAvatar}
+          <MediaQuery minWidth={480}>
+            <div className={s.footerLeft}>
+              <List className={s.author}>
+                <ListItem>
+                  <Tooltip
+                    interactive
+                    open
+                    title={
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar
+                            alt={author.name}
+                            src={author["avatar_urls"]["96"]}
+                            className={s.bigAvatar}
+                          />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={author.name}
+                          secondary={author.description}
+                        />
+                      </ListItem>
+                    }
+                  >
+                    <Avatar
+                      alt={author.name}
+                      src={author["avatar_urls"]["96"]}
+                      className={s.bigAvatar}
+                    />
+                  </Tooltip>
+                  <ListItemText
+                    primary={author.name}
+                    secondary={formattedDate}
                   />
-                </Tooltip>
-                <ListItemText primary={author.name} secondary={formattedDate} />
-              </ListItem>
-            </List>
-          </div>
+                </ListItem>
+              </List>
+            </div>
+          </MediaQuery>
           <div>
             <Button size="small" color="primary">
               Deila

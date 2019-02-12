@@ -1,9 +1,19 @@
-.container {
-  margin: 40px auto;
-  max-width: 740px;
+@import "../../styles/variables.scss";
+
+.containerExtra {
+  padding: 0 20px 40px;
 
   figure {
     margin: 0 -20px;
+  }
+  blockquote {
+    padding-left: 1em;
+    margin: 3em 0;
+    border-left: 2px solid $primary-color;
+  }
+  img {
+    width: 100%;
+    height: auto;
   }
 }
 
@@ -13,10 +23,6 @@
 
 .textCenter {
   text-align: center;
-}
-
-.title {
-  margin-top: 0;
 }
 
 .bigAvatar {
@@ -31,9 +37,19 @@
 }
 
 .media {
-  // ⚠️ object-fit is not supported by IE 11.
-  object-fit: cover;
-  width: 100%;
+  margin: 0 -20px;
+  width: calc(100% + 40px);
   height: 0;
   padding-top: 56.25%;
+}
+
+@media only screen and (min-width: $page-width-ipad) {
+  .media {
+    margin: 0;
+    width: 100%;
+  }
+
+  .containerExtra {
+    padding: 40px 20px;
+  }
 }
