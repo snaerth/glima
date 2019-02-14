@@ -1,58 +1,76 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import generateRandomInteger from "../../utils/generateRandomInteger";
+import { Mobile, Tablet, Desktop } from "../Responsive";
 
-const styles = theme => ({
+const styles = {
   root: {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    overflow: "hidden",
-    backgroundColor: theme.palette.background.paper
+    overflow: "hidden"
   },
   gridList: {
-    width: 700,
-    height: 500
+    width: 992,
+    height: "auto"
+  },
+  img: {
+    cursor: "pointer"
   }
-});
+};
 
-/**
- * The example data is structured as follows:
- *
- * const photos = [
- *   {
- *     id: 30,
- *     title: 'Image title',
- *     src: 'http src link',
- *     etc...
- *   },
- *   {
- *     [etc...]
- *   },
- * ];
- */
-function ImageGridList(props) {
-  const { classes, photos } = props;
+class ImageGridList extends PureComponent {
+  imageClickHandler = e => {
+    const { onClick } = this.props;
+    onClick({ src: e.target.src, title: e.target.alt });
+  };
 
-  return (
-    <div className={classes.root}>
-      <GridList className={classes.gridList} cols={3}>
-        {photos.map(photo => (
-          <GridListTile key={photo.id} cols={generateRandomInteger(1, 2)}>
-            <img src={photo.src} alt={photo.title} />
-          </GridListTile>
-        ))}
-      </GridList>
-    </div>
-  );
+  renderPhotos() {
+    const { classes, photos } = this.props;
+
+    return photos.map(photo => (
+      <GridListTile key={photo.id} cols={1}>
+        <img
+          src={photo.src}
+          alt={photo.title}
+          onClick={this.imageClickHandler}
+          className={classes.img}
+        />
+      </GridListTile>
+    ));
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <Mobile>
+          <GridList cellHeight={160} className={classes.gridList} cols={2}>
+            {this.renderPhotos()}
+          </GridList>
+        </Mobile>
+        <Tablet>
+          <GridList cellHeight={160} className={classes.gridList} cols={3}>
+            {this.renderPhotos()}
+          </GridList>
+        </Tablet>
+        <Desktop>
+          <GridList cellHeight={160} className={classes.gridList} cols={4}>
+            {this.renderPhotos()}
+          </GridList>
+        </Desktop>
+      </div>
+    );
+  }
 }
 
 ImageGridList.propTypes = {
   classes: PropTypes.object.isRequired,
-  photos: PropTypes.array.isRequired
+  photos: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(ImageGridList);

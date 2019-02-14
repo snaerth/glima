@@ -4,23 +4,58 @@ import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import withMobileDialog from "@material-ui/core/withMobileDialog";
+import { Typography } from "@material-ui/core";
+import allowNull from "../../utils/propTypesHelpers";
+import formatDate from "../../utils/dateHelper";
 import getPhotos, { setPhotosLoading } from "../../actions/photos";
 import ImageGridList from "../../components/ImageGridList";
+import Title from "../../components/Title";
 import s from "./Photos.module.scss";
 
 class Photos extends PureComponent {
   static propTypes = {
     actions: PropTypes.object.isRequired,
-    photos: PropTypes.array.isRequired,
+    photos: allowNull(
+      PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired
+    ),
     loading: PropTypes.bool.isRequired,
     error: PropTypes.bool
   };
 
+  state = {
+    activePhotosBatchIdx: 0,
+    open: false,
+    imageSrc: "",
+    imageTitle: ""
+  };
+
   componentDidMount() {
-    const { actions } = this.props;
-    actions.setPhotosLoading();
-    actions.getPhotos("glima");
+    const { actions, match, photos } = this.props;
+
+    if (!photos || photos.length === 0) {
+      actions.setPhotosLoading();
+      actions.getPhotos(match.params.slug);
+    }
   }
+
+  handleClickOpen = ({ src, title }) => {
+    this.setState({ open: true, imageSrc: src, imageTitle: title });
+  };
+
+  handleClickClose = () => {
+    this.setState({ open: false });
+  };
+
+  handleListItemClick(index) {
+    this.setState({ activePhotosBatchIdx: index });
+  }
+
+  handleSelectChange = event => {
+    this.setState({ activePhotosBatchIdx: event.target.value });
+  };
 
   renderLoading() {
     return (
@@ -41,6 +76,7 @@ class Photos extends PureComponent {
 
   render() {
     const { photos, error, loading } = this.props;
+    const { open, imageSrc, imageTitle } = this.state;
 
     if (loading) {
       return this.renderLoading();
@@ -55,11 +91,29 @@ class Photos extends PureComponent {
     }
 
     return (
-      <div className={s.container}>
-        {photos.map(data => (
-          <ImageGridList key={data.id} photos={data.gallery_data.gallery} />
-        ))}
-      </div>
+      <section className={s.container}>
+        <header className={s.header}>
+          <Title>{photos.title.rendered}</Title>
+          <Typography variant="body1" color="textSecondary" gutterBottom>
+            {formatDate(photos.date, false)}
+          </Typography>
+        </header>
+        <ImageGridList
+          key={photos.id}
+          photos={photos.gallery_data.gallery}
+          onClick={this.handleClickOpen}
+        />
+        <Dialog
+          maxWidth="md"
+          open={open}
+          onClose={this.handleClickClose}
+          aria-labelledby="responsive-dialog-title"
+        >
+          <DialogContent>
+            <img src={imageSrc} alt={imageTitle} className={s.modalImage} />
+          </DialogContent>
+        </Dialog>
+      </section>
     );
   }
 }
@@ -72,11 +126,11 @@ class Photos extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    photos: { photos, error, loading }
+    photos: { error, loading, activeAlbum }
   } = state;
-
+  console.log(activeAlbum);
   return {
-    photos,
+    photos: activeAlbum,
     error,
     loading
   };
@@ -97,4 +151,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Photos);
+)(withMobileDialog()(Photos));

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import MediaQuery from "react-responsive";
 import { withStyles } from "@material-ui/core/styles";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
@@ -16,6 +15,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { setActivePost } from "../../actions/posts";
 import formatDate from "../../utils/dateHelper";
 import Tooltip from "../../components/Tooltip";
+import { MobileAndUp } from "../../components/Responsive";
 import s from "./PostBig.module.scss";
 
 const styles = {
@@ -98,7 +98,7 @@ class PostBig extends PureComponent {
         </Typography>
 
         <div className={s.footer}>
-          <MediaQuery minWidth={480}>
+          <MobileAndUp>
             <div className={s.footerLeft}>
               <List className={s.author}>
                 <ListItem>
@@ -134,7 +134,7 @@ class PostBig extends PureComponent {
                 </ListItem>
               </List>
             </div>
-          </MediaQuery>
+          </MobileAndUp>
           <div>
             <Button size="small" color="primary">
               Deila

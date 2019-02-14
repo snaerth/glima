@@ -1,19 +1,21 @@
 import {
   SET_PHOTOS,
   SET_PHOTOS_ERROR,
-  SET_PHOTOS_LOADING
+  SET_PHOTOS_LOADING,
+  SET_ACITVE_ALBUM
 } from "../constants/photos";
 
 const initialState = {
-  photos: [],
+  data: [],
   error: null,
-  loading: false
+  loading: false,
+  activeAlbum: null
 };
 
 function posts(state = initialState, action) {
   switch (action.type) {
     case SET_PHOTOS:
-      return { ...state, photos: action.payload, loading: false };
+      return { ...state, data: action.payload, loading: false };
 
     case SET_PHOTOS_ERROR:
       return {
@@ -24,6 +26,9 @@ function posts(state = initialState, action) {
 
     case SET_PHOTOS_LOADING:
       return { ...state, loading: action.payload };
+
+    case SET_ACITVE_ALBUM:
+      return { ...state, loading: false, activeAlbum: action.payload };
 
     default:
       return state;

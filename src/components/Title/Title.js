@@ -1,12 +1,26 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
-import s from "./Title.module.scss";
+import { Mobile, Tablet, Desktop } from "../../components/Responsive";
 
 const Title = ({ children }) => (
-  <Typography variant="h3" className={s.title} gutterBottom>
-    {children}
-  </Typography>
+  <Fragment>
+    <Desktop>
+      <Typography variant="h2" gutterBottom>
+        {children}
+      </Typography>
+    </Desktop>
+    <Tablet>
+      <Typography variant="h3" gutterBottom>
+        {children}
+      </Typography>
+    </Tablet>
+    <Mobile>
+      <Typography variant="h4" gutterBottom>
+        {children}
+      </Typography>
+    </Mobile>
+  </Fragment>
 );
 
 Title.propTypes = {

@@ -1,0 +1,65 @@
+@import "../../styles/variables.scss";
+
+.container {
+  margin: 0 auto;
+  padding: 40px 20px 0;
+  max-width: $page-width-max;
+}
+
+.containerInner {
+  position: relative;
+}
+
+.photosGridContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 20px;
+  margin-bottom: 40px;
+}
+
+.nav {
+  position: absolute;
+  top: 0;
+  right: -260px;
+  width: 240px;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 500px;
+}
+
+.modalImage {
+  width: 100%;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+@media only screen and (min-width: $page-width-mobile) {
+  .photosGridContainer {
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 20px;
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad) {
+  .photosGridContainer {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media only screen and (min-width: $page-width-max) {
+  .nav {
+    right: -280px;
+    width: 260px;
+  }
+}

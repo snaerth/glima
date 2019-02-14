@@ -36,12 +36,6 @@ export default createMuiTheme({
       popper: {
         opacity: 1
       }
-    },
-    MuiListItemText: {
-      primary: {
-        whiteSpace: "nowrap",
-        fontWeight: 700
-      }
     }
   }
 });

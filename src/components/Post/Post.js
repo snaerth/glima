@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import MediaQuery from "react-responsive";
 import { withStyles } from "@material-ui/core/styles";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
@@ -14,6 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
 import { setActivePost } from "../../actions/posts";
 import formatDate from "../../utils/dateHelper";
+import { MobileOnly, MobileAndUp } from "../../components/Responsive";
 import Tooltip from "../../components/Tooltip";
 import s from "./Post.module.scss";
 
@@ -74,7 +74,7 @@ class Post extends PureComponent {
 
     return (
       <div className={s.card}>
-        <MediaQuery maxWidth={480}>
+        <MobileOnly>
           <Typography
             variant="h6"
             className={classes.title}
@@ -97,10 +97,10 @@ class Post extends PureComponent {
               title={featuredmedia[0].alt_text || title.rendered}
             />
           )}
-        </MediaQuery>
+        </MobileOnly>
         <div className={s.cardContent}>
           <div className={s.content}>
-            <MediaQuery minWidth={480}>
+            <MobileAndUp>
               <Typography
                 gutterBottom
                 variant="h6"
@@ -112,12 +112,12 @@ class Post extends PureComponent {
               <Typography color="textSecondary" component="span">
                 {formattedDate}
               </Typography>
-            </MediaQuery>
+            </MobileAndUp>
             <Typography component="span">
               <span dangerouslySetInnerHTML={{ __html: excerpt.rendered }} />
             </Typography>
           </div>
-          <MediaQuery minWidth={480}>
+          <MobileAndUp>
             <div className={s.imageContainer}>
               {img && (
                 <CardMedia
@@ -128,10 +128,10 @@ class Post extends PureComponent {
                 />
               )}
             </div>
-          </MediaQuery>
+          </MobileAndUp>
         </div>
         <div className={s.footer}>
-          <MediaQuery minWidth={480}>
+          <MobileAndUp>
             <div className={s.footerLeft}>
               <Tooltip
                 interactive
@@ -163,7 +163,7 @@ class Post extends PureComponent {
                 </span>
               </Tooltip>
             </div>
-          </MediaQuery>
+          </MobileAndUp>
           <div>
             <Button size="small" color="primary">
               Deila
