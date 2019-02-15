@@ -1,2 +1,9 @@
-import { Desktop, Tablet, Mobile, MobileOnly, MobileAndUp } from "./Responsive";
-export { Desktop, Tablet, Mobile, MobileOnly, MobileAndUp };
+import {
+  Desktop,
+  Tablet,
+  TabletAndUp,
+  Mobile,
+  MobileOnly,
+  MobileAndUp
+} from "./Responsive";
+export { Desktop, Tablet, TabletAndUp, Mobile, MobileOnly, MobileAndUp };

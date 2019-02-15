@@ -45,7 +45,7 @@ function getPosts(pageNumber = 1) {
       timer.start();
 
       // Fetch posts
-      const { data, totalPages, postsSize } = await fetchPosts(pageNumber);
+      const { data, totalPages } = await fetchPosts(pageNumber);
 
       timer.stop();
       const diff = timer.diff();
@@ -53,8 +53,7 @@ function getPosts(pageNumber = 1) {
         type: SET_POSTS,
         payload: {
           data,
-          totalPages: Number(totalPages),
-          postsSize: Number(postsSize)
+          totalPages: Number(totalPages)
         }
       };
 

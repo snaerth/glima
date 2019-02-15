@@ -26,6 +26,13 @@ export default createMuiTheme({
     secondary: pink
   },
   overrides: {
+    MuiListItemText: {
+      primary: {
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+        overflow: "hidden"
+      }
+    },
     MuiTooltip: {
       tooltip: {
         fontSize: "2em",

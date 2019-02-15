@@ -4,7 +4,8 @@
   padding: 0 20px 40px;
 
   figure {
-    margin: 0 -20px;
+    margin-left: 0;
+    margin-right: 0;
   }
   blockquote {
     padding-left: 1em;
@@ -26,9 +27,10 @@
 }
 
 .bigAvatar {
-  margin-right: 15px;
+  margin-right: 5px;
   width: 60px;
   height: 60px;
+  cursor: pointer;
 }
 
 .author {
@@ -43,7 +45,7 @@
   padding-top: 56.25%;
 }
 
-@media only screen and (min-width: $page-width-ipad) {
+@media only screen and (min-width: $page-width-ipad-landscape) {
   .media {
     margin: 0;
     width: 100%;

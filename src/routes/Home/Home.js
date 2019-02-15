@@ -9,17 +9,26 @@ import Container from "../../components/Container";
 import s from "./Home.module.scss";
 
 class Home extends PureComponent {
+  static defaultProps = {
+    error: null,
+    newsOnly: false
+  };
+
   static propTypes = {
     actions: PropTypes.object.isRequired,
     posts: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
-    error: PropTypes.bool
+    error: PropTypes.bool,
+    newsOnly: PropTypes.bool
   };
 
   componentDidMount() {
-    const { actions } = this.props;
-    actions.setPostsLoading();
-    actions.getPosts();
+    const { actions, posts } = this.props;
+
+    if (posts.length === 0) {
+      actions.setPostsLoading();
+      actions.getPosts();
+    }
   }
 
   renderLoading() {
@@ -50,7 +59,7 @@ class Home extends PureComponent {
       return this.renderNoPosts();
     }
 
-    if (!posts) {
+    if (!posts && posts.length === 0) {
       return this.renderNoPosts();
     }
 

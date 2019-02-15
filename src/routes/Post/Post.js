@@ -10,6 +10,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
 import allowNull from "../../utils/propTypesHelpers";
 import formatDate from "../../utils/dateHelper";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
@@ -38,6 +39,11 @@ class Post extends PureComponent {
       actions.getPost(id);
     }
   }
+
+  backButtonHandler = () => {
+    const { history } = this.props;
+    history.goBack();
+  };
 
   renderLoading() {
     return (
@@ -86,7 +92,7 @@ class Post extends PureComponent {
             title={featuredmedia[0].alt_text || title.rendered}
           />
         )}
-        <h1 className={s.title}>{title.rendered}</h1>
+        <h2 className={s.title}>{title.rendered}</h2>
         <div>
           <List className={s.author}>
             <ListItem>
@@ -124,6 +130,11 @@ class Post extends PureComponent {
           <Typography component="article">
             <span dangerouslySetInnerHTML={{ __html: content.rendered }} />
           </Typography>
+          <div>
+            <Button color="primary" onClick={this.backButtonHandler}>
+              Til baka
+            </Button>
+          </div>
         </div>
       </Container>
     );

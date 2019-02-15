@@ -7,29 +7,43 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { Typography } from "@material-ui/core";
 import getPhotos, {
   setPhotosLoading,
+  setPhotosPage,
   setActiveAlbum
 } from "../../actions/photos";
 import PhotosGrid from "../../components/PhotosGrid";
 import Title from "../../components/Title";
+import Pagination from "../../components/Pagination";
 import s from "./PhotoAlbums.module.scss";
 
 class PhotoAlbums extends PureComponent {
+  static defaultProps = {
+    error: null
+  };
+
   static propTypes = {
     actions: PropTypes.object.isRequired,
     photos: PropTypes.array.isRequired,
     loading: PropTypes.bool.isRequired,
+    totalPages: PropTypes.number.isRequired,
+    page: PropTypes.number.isRequired,
     error: PropTypes.bool
   };
 
   componentDidMount() {
-    const { actions, photos } = this.props;
+    const { actions, photos, page } = this.props;
 
     if (!photos || photos.length === 0) {
       actions.setPhotosLoading();
-      actions.getPhotos();
+      actions.getPhotos(null, page);
     }
   }
 
+  /**
+   * Sets active album in Redux store and navigates
+   * to /myndir/:slug/:id
+   * @param {Number} id - Album id
+   * @param {String} slug - Album slug
+   */
   albumClickHandler = (id, slug) => {
     const { actions, history } = this.props;
 
@@ -37,6 +51,20 @@ class PhotoAlbums extends PureComponent {
 
     // Navigates user to /myndir/:slug
     history.push(`/myndir/${slug}/${id}`);
+  };
+
+  /**
+   * Changes pagination
+   *
+   * @param {Object} obj
+   * @param {Number} obj.selected - Selected page in pagination
+   */
+  paginateHandler = ({ selected }) => {
+    const { actions } = this.props;
+    const page = selected + 1;
+    actions.setPhotosPage(page);
+    actions.setPhotosLoading();
+    actions.getPhotos(null, page);
   };
 
   renderLoading() {
@@ -57,7 +85,7 @@ class PhotoAlbums extends PureComponent {
   }
 
   render() {
-    const { photos, error, loading } = this.props;
+    const { photos, error, loading, totalPages, page } = this.props;
 
     if (loading) {
       return this.renderLoading();
@@ -82,6 +110,13 @@ class PhotoAlbums extends PureComponent {
         <div className={s.photosGridContainer}>
           <PhotosGrid photos={photos} onClick={this.albumClickHandler} />
         </div>
+        <div className={s.paginationContainer}>
+          <Pagination
+            pageCount={totalPages}
+            initialPage={page}
+            onPageChangeHandler={this.paginateHandler}
+          />
+        </div>
       </section>
     );
   }
@@ -95,11 +130,13 @@ class PhotoAlbums extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    photos: { data, error, loading }
+    photos: { data, error, loading, totalPages, page }
   } = state;
 
   return {
     photos: data,
+    totalPages,
+    page,
     error,
     loading
   };
@@ -114,7 +151,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { getPhotos, setPhotosLoading, setActiveAlbum },
+      { getPhotos, setPhotosLoading, setPhotosPage, setActiveAlbum },
       dispatch
     )
   };

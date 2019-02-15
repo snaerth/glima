@@ -15,7 +15,7 @@ import Avatar from "@material-ui/core/Avatar";
 import { setActivePost } from "../../actions/posts";
 import formatDate from "../../utils/dateHelper";
 import Tooltip from "../../components/Tooltip";
-import { MobileAndUp } from "../../components/Responsive";
+import { Mobile, TabletAndUp, MobileAndUp } from "../../components/Responsive";
 import s from "./PostBig.module.scss";
 
 const styles = {
@@ -84,19 +84,29 @@ class PostBig extends PureComponent {
             title={featuredmedia[0].alt_text || title.rendered}
           />
         )}
-
-        <Typography
-          gutterBottom
-          variant="h4"
-          className={classes.title}
-          onClick={this.readMoreClickHandler}
-        >
-          <span dangerouslySetInnerHTML={{ __html: title.rendered }} />
-        </Typography>
+        <Mobile>
+          <Typography
+            gutterBottom
+            variant="h6"
+            className={classes.title}
+            onClick={this.readMoreClickHandler}
+          >
+            <span dangerouslySetInnerHTML={{ __html: title.rendered }} />
+          </Typography>
+        </Mobile>
+        <TabletAndUp>
+          <Typography
+            gutterBottom
+            variant="h4"
+            className={classes.title}
+            onClick={this.readMoreClickHandler}
+          >
+            <span dangerouslySetInnerHTML={{ __html: title.rendered }} />
+          </Typography>
+        </TabletAndUp>
         <Typography component="span">
           <span dangerouslySetInnerHTML={{ __html: excerpt.rendered }} />
         </Typography>
-
         <div className={s.footer}>
           <MobileAndUp>
             <div className={s.footerLeft}>

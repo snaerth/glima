@@ -16,6 +16,13 @@ const styles = {
 };
 
 class Posts extends PureComponent {
+  static propTypes = {
+    posts: PropTypes.array.isRequired,
+    classes: PropTypes.object.isRequired,
+    totalPages: PropTypes.number.isRequired,
+    page: PropTypes.number.isRequired
+  };
+
   /**
    * Changes pagination
    *
@@ -56,14 +63,6 @@ class Posts extends PureComponent {
   }
 }
 
-Posts.propTypes = {
-  posts: PropTypes.array.isRequired,
-  classes: PropTypes.object.isRequired,
-  totalPages: PropTypes.number.isRequired,
-  postsSize: PropTypes.number.isRequired,
-  page: PropTypes.number.isRequired
-};
-
 /**
  * Maps state to components props
  *
@@ -72,12 +71,11 @@ Posts.propTypes = {
  */
 function mapStateToProps(state) {
   const {
-    blog: { totalPages, postsSize, page }
+    blog: { totalPages, page }
   } = state;
 
   return {
     totalPages,
-    postsSize,
     page
   };
 }

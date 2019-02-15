@@ -128,7 +128,7 @@ function mapStateToProps(state) {
   const {
     photos: { error, loading, activeAlbum }
   } = state;
-  console.log(activeAlbum);
+
   return {
     photos: activeAlbum,
     error,

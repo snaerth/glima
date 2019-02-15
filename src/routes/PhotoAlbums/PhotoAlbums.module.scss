@@ -6,6 +6,11 @@
   max-width: $page-width-max;
 }
 
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+}
+
 .containerInner {
   position: relative;
 }

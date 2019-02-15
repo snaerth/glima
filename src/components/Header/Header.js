@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Button from "@material-ui/core/Button";
+import { TabletAndUp } from "../Responsive";
 
 const styles = theme => ({
   root: {
@@ -43,17 +44,26 @@ function Header(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Link to="/" className={classes.noLink}>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              Glímusamband Íslands
-            </Typography>
-          </Link>
-          <div className={classes.rightWing}>
-            <Link to="/myndir" className={classes.noLink}>
-              <Button className={classes.button} color="inherit">
-                Myndir
-              </Button>
+          <TabletAndUp>
+            <Link to="/" className={classes.noLink}>
+              <Typography variant="h6" color="inherit" className={classes.grow}>
+                Glímusamband Íslands
+              </Typography>
             </Link>
+          </TabletAndUp>
+          <div className={classes.rightWing}>
+            <TabletAndUp>
+              <Link to="/frettir" className={classes.noLink}>
+                <Button className={classes.button} color="inherit">
+                  Fréttir
+                </Button>
+              </Link>
+              <Link to="/myndir" className={classes.noLink}>
+                <Button className={classes.button} color="inherit">
+                  Myndir
+                </Button>
+              </Link>
+            </TabletAndUp>
           </div>
         </Toolbar>
       </AppBar>
