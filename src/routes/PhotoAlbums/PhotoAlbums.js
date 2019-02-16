@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import queryString from "query-string";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Typography } from "@material-ui/core";
 import getPhotos, {
@@ -30,11 +31,38 @@ class PhotoAlbums extends PureComponent {
   };
 
   componentDidMount() {
-    const { actions, photos, page } = this.props;
+    const { actions, photos, page, location, history } = this.props;
+    const qsPageParam = queryString.parse(location.search);
 
     if (!photos || photos.length === 0) {
       actions.setPhotosLoading();
-      actions.getPhotos(null, page);
+
+      if (qsPageParam.page) {
+        const pageNumber = Number(qsPageParam.page);
+        actions.setPhotosPage(pageNumber);
+        actions.getPhotos(null, pageNumber);
+      } else {
+        actions.getPhotos(null, page);
+        history.push("/myndir/?page=1");
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { actions, page, location } = this.props;
+    const qsPageParam = queryString.parse(location.search);
+    const pageNumber = Number(qsPageParam.page);
+
+    if (prevProps.page !== page || (pageNumber && pageNumber !== page)) {
+      actions.setPhotosLoading();
+
+      if (qsPageParam.page) {
+        const pageNumber = Number(qsPageParam.page);
+        actions.setPhotosPage(pageNumber);
+        actions.getPhotos(null, pageNumber);
+      } else {
+        actions.getPhotos(null, page);
+      }
     }
   }
 
@@ -60,11 +88,10 @@ class PhotoAlbums extends PureComponent {
    * @param {Number} obj.selected - Selected page in pagination
    */
   paginateHandler = ({ selected }) => {
-    const { actions } = this.props;
+    const { actions, history } = this.props;
     const page = selected + 1;
+    history.push(`/myndir/?page=${page}`);
     actions.setPhotosPage(page);
-    actions.setPhotosLoading();
-    actions.getPhotos(null, page);
   };
 
   renderLoading() {

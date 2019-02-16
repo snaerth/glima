@@ -48,7 +48,7 @@ class ImageGridList extends PureComponent {
     return (
       <div className={classes.root}>
         <Mobile>
-          <GridList cellHeight={160} className={classes.gridList} cols={2}>
+          <GridList cellHeight={200} className={classes.gridList} cols={1}>
             {this.renderPhotos()}
           </GridList>
         </Mobile>

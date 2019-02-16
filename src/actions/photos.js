@@ -54,7 +54,7 @@ export function setActiveAlbum(id, slug) {
  * @param {String} slug - Wordpress Envira-gallery slug
  * @param {Number} pageNumber - Pagination page number
  */
-function getPhotos(slug, pageNumber = 1) {
+function getPhotos(slug, pageNumber) {
   return async dispatch => {
     try {
       // Fetch posts
