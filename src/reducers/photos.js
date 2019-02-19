@@ -10,7 +10,7 @@ const initialState = {
   data: [],
   totalPages: 0,
   page: 1,
-  error: null,
+  error: false,
   loading: false,
   activeAlbum: null
 };
@@ -19,7 +19,7 @@ function posts(state = initialState, action) {
   switch (action.type) {
     case SET_PHOTOS:
       const { data, totalPages } = action.payload;
-      return { ...state, data, totalPages, loading: false };
+      return { ...state, data, totalPages, loading: false, error: false };
 
     case SET_PHOTOS_ERROR:
       return {

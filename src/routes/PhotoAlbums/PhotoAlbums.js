@@ -2,9 +2,7 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import queryString from "query-string";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { Typography } from "@material-ui/core";
 import getPhotos, {
   setPhotosLoading,
@@ -13,7 +11,9 @@ import getPhotos, {
 } from "../../actions/photos";
 import PhotosGrid from "../../components/PhotosGrid";
 import Title from "../../components/Title";
+import Loading from "../../components/Loading";
 import Pagination from "../../components/Pagination";
+import NoData from "../../components/NoData";
 import s from "./PhotoAlbums.module.scss";
 
 class PhotoAlbums extends PureComponent {
@@ -33,17 +33,21 @@ class PhotoAlbums extends PureComponent {
   componentDidMount() {
     const { actions, photos, page, location, history } = this.props;
     const qsPageParam = queryString.parse(location.search);
+    const pageNumber = Number(qsPageParam.page);
 
     if (!photos || photos.length === 0) {
       actions.setPhotosLoading();
 
       if (qsPageParam.page) {
-        const pageNumber = Number(qsPageParam.page);
         actions.setPhotosPage(pageNumber);
         actions.getPhotos(null, pageNumber);
       } else {
+        actions.setPhotosPage(pageNumber);
         actions.getPhotos(null, page);
-        history.push("/myndir/?page=1");
+
+        if (location.pathname.includes("/myndir")) {
+          history.push("/myndir/?page=1");
+        }
       }
     }
   }
@@ -53,7 +57,7 @@ class PhotoAlbums extends PureComponent {
     const qsPageParam = queryString.parse(location.search);
     const pageNumber = Number(qsPageParam.page);
 
-    if (prevProps.page !== page || (pageNumber && pageNumber !== page)) {
+    if (pageNumber && pageNumber !== prevProps.page && pageNumber !== page) {
       actions.setPhotosLoading();
 
       if (qsPageParam.page) {
@@ -88,42 +92,25 @@ class PhotoAlbums extends PureComponent {
    * @param {Number} obj.selected - Selected page in pagination
    */
   paginateHandler = ({ selected }) => {
-    const { actions, history } = this.props;
+    const { history } = this.props;
     const page = selected + 1;
     history.push(`/myndir/?page=${page}`);
-    actions.setPhotosPage(page);
   };
-
-  renderLoading() {
-    return (
-      <div className={classNames(s.container, s.loadingContainer)}>
-        <CircularProgress />
-        <p>Sæki myndir...</p>
-      </div>
-    );
-  }
-
-  renderNoPhotos() {
-    return (
-      <div className={classNames(s.container, s.textCenter)}>
-        <h1>Engar myndir fundust</h1>
-      </div>
-    );
-  }
 
   render() {
     const { photos, error, loading, totalPages, page } = this.props;
 
     if (loading) {
-      return this.renderLoading();
+      return <Loading text="Sæki myndir..." />;
     }
 
-    if (error) {
-      return this.renderNoPhotos();
-    }
-
-    if (!photos || photos.length === 0) {
-      return this.renderNoPhotos();
+    if (error || !photos || photos.length === 0) {
+      return (
+        <NoData
+          textCenter={false}
+          text="Við fundum engar myndir á þessum hlekk."
+        />
+      );
     }
 
     return (

@@ -53,7 +53,7 @@ function Header(props) {
           </TabletAndUp>
           <div className={classes.rightWing}>
             <TabletAndUp>
-              <Link to="/frettir" className={classes.noLink}>
+              <Link to="/frettir/?page=1" className={classes.noLink}>
                 <Button className={classes.button} color="inherit">
                   Fréttir
                 </Button>

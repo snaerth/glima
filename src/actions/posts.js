@@ -58,9 +58,11 @@ function getPosts(pageNumber = 1) {
       };
 
       if (data instanceof Error) {
-        dispatch({
+        console.error(data);
+
+        return dispatch({
           type: SET_POSTS_ERROR,
-          error: data
+          payload: true
         });
       } else if (diff < REQUEST_TIME_MIN) {
         // Delay execution of dispatch by 1 second because of UI loading
@@ -77,9 +79,11 @@ function getPosts(pageNumber = 1) {
         return Promise.resolve();
       }
     } catch (error) {
+      console.error(error);
+
       dispatch({
         type: SET_POSTS_ERROR,
-        payload: error
+        payload: true
       });
     }
   };

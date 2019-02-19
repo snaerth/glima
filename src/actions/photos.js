@@ -59,11 +59,12 @@ function getPhotos(slug, pageNumber) {
     try {
       // Fetch posts
       const { data, totalPages } = await fetchPhotos(slug, pageNumber);
-
       if (data instanceof Error) {
-        dispatch({
+        console.error(data);
+
+        return dispatch({
           type: SET_PHOTOS_ERROR,
-          error: data
+          payload: true
         });
       }
 
@@ -82,9 +83,11 @@ function getPhotos(slug, pageNumber) {
         });
       }
     } catch (error) {
+      console.error(error);
+
       dispatch({
         type: SET_PHOTOS_ERROR,
-        payload: error
+        payload: true
       });
     }
   };

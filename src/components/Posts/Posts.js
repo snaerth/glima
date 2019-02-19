@@ -1,26 +1,98 @@
 import React, { Fragment, PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import { bindActionCreators } from "redux";
+import queryString from "query-string";
 import Divider from "@material-ui/core/Divider";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 import { withStyles } from "@material-ui/core/styles";
 import getPosts, { setPostsLoading, setPostsPage } from "../../actions/posts";
+import Loading from "../Loading";
 import Post from "../Post";
 import PostBig from "../PostBig";
 import Pagination from "../Pagination";
+import NoData from "../../components/NoData";
+import s from "./Posts.module.scss";
 
-const styles = {
+const styles = theme => ({
   root: {
     margin: "15px 0"
+  },
+  fab: {
+    margin: theme.spacing.unit
+  },
+  extendedIcon: {
+    marginRight: theme.spacing.unit
   }
-};
+});
 
 class Posts extends PureComponent {
+  static defaultProps = {
+    showPagination: true,
+    moreButton: false,
+    error: false
+  };
+
   static propTypes = {
     posts: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     totalPages: PropTypes.number.isRequired,
-    page: PropTypes.number.isRequired
+    page: PropTypes.number.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
+    error: PropTypes.bool,
+    showPagination: PropTypes.bool,
+    moreButton: PropTypes.bool
+  };
+
+  componentDidMount() {
+    const { actions, posts, page, location, history } = this.props;
+    const qsPageParam = queryString.parse(location.search);
+    const pageNumber = Number(qsPageParam.page);
+
+    if (!posts || posts.length === 0) {
+      actions.setPostsLoading();
+
+      if (pageNumber) {
+        actions.setPostsPage(pageNumber);
+        actions.getPosts(pageNumber);
+      } else {
+        actions.setPostsPage(page);
+        actions.getPosts(page);
+
+        if (location.pathname.includes("/frettir")) {
+          history.push("/frettir/?page=1");
+        }
+      }
+    } else if (pageNumber) {
+      actions.setPostsPage(pageNumber);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { actions, page, location } = this.props;
+    const qsPageParam = queryString.parse(location.search);
+    const pageNumber = Number(qsPageParam.page);
+
+    if (pageNumber && pageNumber !== prevProps.page && pageNumber !== page) {
+      actions.setPostsLoading();
+
+      if (qsPageParam.page) {
+        const pageNumber = Number(qsPageParam.page);
+        actions.setPostsPage(pageNumber);
+        actions.getPosts(pageNumber);
+      } else {
+        actions.getPosts(page);
+      }
+    }
+  }
+
+  moreButtonClickHandler = () => {
+    const { history } = this.props;
+    history.push("/frettir/?page=2");
   };
 
   /**
@@ -30,15 +102,40 @@ class Posts extends PureComponent {
    * @param {Number} obj.selected - Selected page in pagination
    */
   paginateHandler = ({ selected }) => {
-    const { actions } = this.props;
+    const { history } = this.props;
     const page = selected + 1;
-    actions.setPostsPage(page);
-    actions.setPostsLoading();
-    actions.getPosts(page);
+    history.push(`/frettir/?page=${page}`);
   };
 
+  renderNoPosts() {
+    return (
+      <NoData
+        textCenter={false}
+        text="Við fundum engar fréttir á þessum hlekk."
+      />
+    );
+  }
+
   render() {
-    const { posts, classes, totalPages, page } = this.props;
+    const {
+      posts,
+      classes,
+      totalPages,
+      page,
+      showPagination,
+      moreButton,
+      loading,
+      error
+    } = this.props;
+
+    if (loading) {
+      return <Loading text="Sæki fréttir..." />;
+    }
+
+    if (error) {
+      return this.renderNoPosts();
+    }
+
     if (posts && posts.length > 0) {
       const isLastPostIdx = posts.length - 1;
 
@@ -50,16 +147,32 @@ class Posts extends PureComponent {
               {isLastPostIdx !== idx && <Divider className={classes.root} />}
             </Fragment>
           ))}
-          <Pagination
-            pageCount={totalPages}
-            initialPage={page}
-            onPageChangeHandler={this.paginateHandler}
-          />
+          {showPagination && (
+            <Pagination
+              pageCount={totalPages}
+              initialPage={page}
+              onPageChangeHandler={this.paginateHandler}
+            />
+          )}
+          {moreButton && (
+            <div className={s.buttonContainer}>
+              <Fab
+                color="primary"
+                variant="extended"
+                aria-label="Fleiri fréttir"
+                className={classes.fab}
+                onClick={this.moreButtonClickHandler}
+              >
+                <AddIcon className={classes.extendedIcon} />
+                Fleiri fréttir
+              </Fab>
+            </div>
+          )}
         </div>
       );
+    } else {
+      return this.renderNoPosts();
     }
-
-    return null;
   }
 }
 
@@ -71,12 +184,15 @@ class Posts extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    blog: { totalPages, page }
+    blog: { data, totalPages, page, loading, error }
   } = state;
 
   return {
+    posts: data,
     totalPages,
-    page
+    page,
+    loading,
+    error
   };
 }
 
@@ -95,7 +211,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Posts));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(Posts))
+);

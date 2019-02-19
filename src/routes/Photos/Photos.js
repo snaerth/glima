@@ -2,8 +2,6 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
-import classNames from "classnames";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import withMobileDialog from "@material-ui/core/withMobileDialog";
@@ -12,7 +10,9 @@ import allowNull from "../../utils/propTypesHelpers";
 import formatDate from "../../utils/dateHelper";
 import getPhotos, { setPhotosLoading } from "../../actions/photos";
 import ImageGridList from "../../components/ImageGridList";
+import Loading from "../../components/Loading";
 import Title from "../../components/Title";
+import NoData from "../../components/NoData";
 import s from "./Photos.module.scss";
 
 class Photos extends PureComponent {
@@ -57,37 +57,20 @@ class Photos extends PureComponent {
     this.setState({ activePhotosBatchIdx: event.target.value });
   };
 
-  renderLoading() {
-    return (
-      <div className={classNames(s.container, s.loadingContainer)}>
-        <CircularProgress />
-        <p>Sæki myndir...</p>
-      </div>
-    );
-  }
-
-  renderNoPhotos() {
-    return (
-      <div className={classNames(s.container, s.textCenter)}>
-        <h1>Engar myndir fundust</h1>
-      </div>
-    );
-  }
-
   render() {
     const { photos, error, loading } = this.props;
     const { open, imageSrc, imageTitle } = this.state;
 
     if (loading) {
-      return this.renderLoading();
+      return <Loading text="Sæki myndir..." />;
     }
 
-    if (error) {
-      return this.renderNoPhotos();
-    }
-
-    if (!photos || photos.length === 0) {
-      return this.renderNoPhotos();
+    if (error || !photos || photos.length === 0) {
+      return (
+        <NoData>
+          <h1>Engar myndir fundust</h1>
+        </NoData>
+      );
     }
 
     return (

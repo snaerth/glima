@@ -27,6 +27,8 @@ export default async function fetchPhotos(slug, page) {
       totalPages: response.headers["x-wp-totalpages"]
     };
   } catch (error) {
-    return error;
+    return {
+      data: error
+    };
   }
 }

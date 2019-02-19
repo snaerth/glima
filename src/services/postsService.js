@@ -39,6 +39,8 @@ export default async function fetchPosts(page) {
       totalPages: response.headers["x-wp-totalpages"]
     };
   } catch (error) {
-    return error;
+    return {
+      data: error
+    };
   }
 }
