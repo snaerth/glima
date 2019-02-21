@@ -38,7 +38,7 @@ export function setPostsPage(page) {
  *
  * @param {Number} pageNumber - Posts Rest API page number
  */
-function getPosts(pageNumber = 1) {
+function getPosts(pageNumber = 1, categories = "") {
   return async dispatch => {
     try {
       const timer = new Timer();

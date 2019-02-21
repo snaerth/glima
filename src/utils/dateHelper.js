@@ -10,10 +10,15 @@ const months = "janúar_febrúar_mars_apríl_maí_júní_júlí_ágúst_septembe
  */
 function formatDate(date, showClock = true) {
   const dateObj = new Date(date);
+  let hours = dateObj.getHours();
+  let minutes = dateObj.getMinutes();
+  hours = hours.toString().length === 1 ? `0${hours}` : hours;
+  minutes = minutes.toString().length === 1 ? `0${minutes}` : minutes;
+
   const formattedDate = `${dateObj.getDate()}. ${
     months[dateObj.getMonth()]
   } ${dateObj.getFullYear()}`;
-  const time = `${dateObj.getHours()}:${dateObj.getMinutes()}`;
+  const time = `${hours}:${minutes}`;
 
   if (showClock) {
     return `${formattedDate} - ${time}`;

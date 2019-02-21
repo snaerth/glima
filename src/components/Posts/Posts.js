@@ -32,7 +32,8 @@ class Posts extends PureComponent {
   static defaultProps = {
     showPagination: true,
     moreButton: false,
-    error: false
+    error: false,
+    className: ""
   };
 
   static propTypes = {
@@ -43,6 +44,7 @@ class Posts extends PureComponent {
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
+    className: PropTypes.string,
     error: PropTypes.bool,
     showPagination: PropTypes.bool,
     moreButton: PropTypes.bool
@@ -53,7 +55,11 @@ class Posts extends PureComponent {
     const qsPageParam = queryString.parse(location.search);
     const pageNumber = Number(qsPageParam.page);
 
-    if (!posts || posts.length === 0) {
+    if (location.pathname === "/") {
+      actions.setPostsLoading();
+      actions.setPostsPage(1);
+      actions.getPosts(1);
+    } else if (!posts || posts.length === 0 || pageNumber) {
       actions.setPostsLoading();
 
       if (pageNumber) {
@@ -67,8 +73,6 @@ class Posts extends PureComponent {
           history.push("/frettir/?page=1");
         }
       }
-    } else if (pageNumber) {
-      actions.setPostsPage(pageNumber);
     }
   }
 
@@ -91,8 +95,13 @@ class Posts extends PureComponent {
   }
 
   moreButtonClickHandler = () => {
-    const { history } = this.props;
-    history.push("/frettir/?page=2");
+    const { history, totalPages } = this.props;
+
+    if (totalPages === 1) {
+      history.push("/frettir");
+    } else {
+      history.push("/frettir/?page=2");
+    }
   };
 
   /**
@@ -125,7 +134,8 @@ class Posts extends PureComponent {
       showPagination,
       moreButton,
       loading,
-      error
+      error,
+      className
     } = this.props;
 
     if (loading) {
@@ -138,9 +148,10 @@ class Posts extends PureComponent {
 
     if (posts && posts.length > 0) {
       const isLastPostIdx = posts.length - 1;
+      const showMoreButton = moreButton && totalPages > 1;
 
       return (
-        <div>
+        <div className={className}>
           {posts.map((post, idx) => (
             <Fragment key={post.id}>
               {idx === 0 ? <PostBig data={post} /> : <Post data={post} />}
@@ -154,7 +165,7 @@ class Posts extends PureComponent {
               onPageChangeHandler={this.paginateHandler}
             />
           )}
-          {moreButton && (
+          {showMoreButton && (
             <div className={s.buttonContainer}>
               <Fab
                 color="primary"

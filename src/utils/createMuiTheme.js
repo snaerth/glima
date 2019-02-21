@@ -43,6 +43,14 @@ export default createMuiTheme({
       popper: {
         opacity: 1
       }
+    },
+    MuiCardHeader: {
+      title: {
+        fontSize: "1.6rem"
+      },
+      subheader: {
+        fontSize: "1.125rem"
+      }
     }
   }
 });

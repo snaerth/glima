@@ -45,13 +45,15 @@
   padding-top: 56.25%;
 }
 
+@media only screen and (min-width: $page-width-ipad) {
+  .containerExtra {
+    padding: 40px 20px;
+  }
+}
+
 @media only screen and (min-width: $page-width-ipad-landscape) {
   .media {
     margin: 0;
     width: 100%;
-  }
-
-  .containerExtra {
-    padding: 40px 20px;
   }
 }

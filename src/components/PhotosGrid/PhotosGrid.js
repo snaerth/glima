@@ -7,12 +7,12 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import formatDate from "../../utils/dateHelper";
 
-const styles = {
+const styles = theme => ({
   media: {
     height: 0,
     paddingTop: "56.25%" // 16:9
   }
-};
+});
 
 function PhotosGrid({ classes, photos, onClick }) {
   return photos.map((photo, idx) => {
@@ -24,6 +24,7 @@ function PhotosGrid({ classes, photos, onClick }) {
           <CardHeader
             title={photo.title.rendered}
             subheader={formatDate(photo.date, false)}
+            className={classes.title}
           />
           <CardMedia
             className={classes.media}

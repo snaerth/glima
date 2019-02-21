@@ -1,0 +1,34 @@
+@import "../../styles/variables.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: $page-width-ipad-landscape;
+}
+
+.postsContainer,
+.eventsContainer {
+  width: 100%;
+}
+
+@media only screen and (min-width: $page-width-desktop) {
+  .container {
+    flex-direction: row;
+  }
+
+  .postsContainer {
+    width: 70%;
+    margin-right: 30px;
+  }
+
+  .eventsContainer {
+    width: calc(30% - 45px);
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad-landscape) {
+  .eventsContainer {
+    width: 30%;
+  }
+}

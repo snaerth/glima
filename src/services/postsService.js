@@ -24,15 +24,20 @@ export async function fetchPost(id) {
  * Gets wordpress posts
  *
  * @param {Number} page - page number
+ * @param {Array<Number>} categories - Array of categories numbers
  * @returns {Object|Object<Error>}
  */
-export default async function fetchPosts(page) {
+export default async function fetchPosts(page, categories = []) {
   try {
-    const response = await axois.get(
-      `${API_URL}/wp-json/wp/v2/posts?_embed&page=${
-        page >= 1 ? page : 1
-      }&per_page=${POSTS_PER_PAGE}`
-    );
+    let url = `${API_URL}/wp-json/wp/v2/posts?_embed&page=${
+      page >= 1 ? page : 1
+    }&per_page=${POSTS_PER_PAGE}`;
+
+    if (categories.length > 0 && Array.isArray(categories)) {
+      url = `${url}&categories=${categories.join(",")}`;
+    }
+
+    const response = await axois.get(url);
 
     return {
       data: response.data,
