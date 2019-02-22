@@ -58,6 +58,11 @@ function Header(props) {
                   Fréttir
                 </Button>
               </Link>
+              <Link to="/vidburdir/?page=1" className={classes.noLink}>
+                <Button className={classes.button} color="inherit">
+                  Viðburðir
+                </Button>
+              </Link>
               <Link to="/myndir/?page=1" className={classes.noLink}>
                 <Button className={classes.button} color="inherit">
                   Myndir

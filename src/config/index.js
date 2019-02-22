@@ -5,6 +5,7 @@ export default {
   // Minimum time to display loading before making posts visible
   // Time is in milliseconds
   REQUEST_TIME_MIN: 200,
+  VISIBLE_EVENTS: 1,
   mail: {
     email: "gli@glima.is ",
     subject: "Fyrirspurn frá vef",

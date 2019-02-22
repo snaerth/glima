@@ -20,8 +20,16 @@ export function setCategoriesLoading() {
  * @param {String} slug - Category slug
  */
 function getCategories(slug = "") {
-  return async dispatch => {
+  return async (dispatch, getStore) => {
     try {
+      const { categories } = getStore();
+
+      // Check if categories has already be fetched
+      if (categories.data.length > 0) {
+        return categories.data;
+      }
+
+      // Fetch categories
       const { data } = await fetchCategories(slug);
 
       if (data instanceof Error) {

@@ -7,8 +7,18 @@
   max-width: $page-width-ipad-landscape;
 }
 
+.containerSmaller {
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 680px;
+}
+
 .postsContainer,
 .eventsContainer {
+  width: 100%;
+}
+
+.postsOnlyContainer {
   width: 100%;
 }
 
@@ -18,17 +28,17 @@
   }
 
   .postsContainer {
-    width: 70%;
+    width: 65%;
     margin-right: 30px;
   }
 
   .eventsContainer {
-    width: calc(30% - 45px);
+    width: calc(35% - 45px);
   }
 }
 
 @media only screen and (min-width: $page-width-ipad-landscape) {
   .eventsContainer {
-    width: 30%;
+    width: 35%;
   }
 }

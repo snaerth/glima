@@ -5,10 +5,16 @@ const { API_URL } = config;
 
 /**
  * Gets wordpress events
+ * @param {Number} id - Event id
  */
-async function fetchEvents() {
+async function fetchEvents(id) {
   try {
-    const url = `${API_URL}/wp-json/tribe/events/v1/events`;
+    let url = `${API_URL}/wp-json/tribe/events/v1/events`;
+
+    if (id) {
+      url = `${url}/${id}`;
+    }
+
     const response = await axois.get(url);
 
     return {

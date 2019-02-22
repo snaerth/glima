@@ -10,6 +10,7 @@ import s from "./NoData.module.scss";
 
 const HomeLink = props => <RouterLink to="/" {...props} />;
 const NewsLink = props => <RouterLink to="/frettir/?page=1" {...props} />;
+const EventsLink = props => <RouterLink to="/vidburdir/?page=1" {...props} />;
 const PhotosLink = props => <RouterLink to="/myndir/?page=1" {...props} />;
 
 function NoData({ text, textCenter }) {
@@ -49,6 +50,11 @@ function NoData({ text, textCenter }) {
           </Link>
         </li>
         <li>
+          <Link underline="hover" component={EventsLink}>
+            Viðburðir
+          </Link>
+        </li>
+        <li>
           <Link underline="hover" component={PhotosLink}>
             Myndir
           </Link>
@@ -60,7 +66,7 @@ function NoData({ text, textCenter }) {
 
 NoData.defaultProps = {
   text: "Við fundum ekki það sem þú varst að leita að.",
-  textCenter: true
+  textCenter: false
 };
 
 NoData.propTypes = {

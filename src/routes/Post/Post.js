@@ -22,7 +22,7 @@ import s from "./Post.module.scss";
 class Post extends PureComponent {
   static propTypes = {
     post: allowNull(PropTypes.object.isRequired),
-    error: allowNull(PropTypes.object.isRequired),
+    error: allowNull(PropTypes.bool.isRequired),
     actions: PropTypes.object.isRequired
   };
 

@@ -11,6 +11,9 @@ const styles = theme => ({
   media: {
     height: 0,
     paddingTop: "56.25%" // 16:9
+  },
+  title: {
+    backgroundColor: "rgb(236, 236, 236)"
   }
 });
 

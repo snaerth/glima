@@ -5,10 +5,14 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import EventIcon from "@material-ui/icons/Event";
 import formatDate from "../../utils/dateHelper";
+import config from "../../config";
+
+const { VISIBLE_EVENTS } = config;
 
 const styles = theme => ({
   root: {
@@ -22,20 +26,31 @@ const styles = theme => ({
 
 class EventsList extends PureComponent {
   static defaultProps = {
-    title: ""
+    title: "",
+    onClick: () => {}
   };
 
   static propTypes = {
-    history: PropTypes.object.isRequired,
     events: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
-    title: PropTypes.string
+    history: PropTypes.object.isRequired,
+    title: PropTypes.string,
+    onClick: PropTypes.func
   };
 
+  /**
+   * Calls onClick callback function
+   * @param {Number} id - Event id
+   */
   onClickHandler(id) {
-    const { history } = this.props;
-    history.push(`/vidburdir/${id}`);
+    const { onClick } = this.props;
+    onClick(id);
   }
+
+  moreEventsClickHandler = () => {
+    const { history } = this.props;
+    history.push("/vidburdir/?page=1");
+  };
 
   render() {
     const { classes, title, events } = this.props;
@@ -58,34 +73,45 @@ class EventsList extends PureComponent {
           </Fragment>
         )}
         <List className={classes.root}>
-          {events.map(event => (
-            <ListItem
-              data-id={event.id}
-              button
-              onClick={this.onClickHandler.bind(this, event.id)}
-              key={event.id}
-            >
-              {event.image &&
-              event.image.sizes &&
-              event.image.sizes.thumbnail &&
-              event.image.sizes.thumbnail.url ? (
-                <Avatar
-                  alt={event.title}
-                  src={event.image.sizes.thumbnail.url}
-                />
-              ) : (
-                <Avatar>
-                  <EventIcon />
-                </Avatar>
-              )}
+          {events.map((event, idx) => {
+            if (idx < VISIBLE_EVENTS) {
+              return null;
+            }
 
-              <ListItemText
-                primary={event.title}
-                secondary={formatDate(event.start_date)}
-              />
-            </ListItem>
-          ))}
+            return (
+              <ListItem
+                data-id={event.id}
+                button
+                onClick={this.onClickHandler.bind(this, event.id)}
+                key={event.id}
+              >
+                {event.image &&
+                event.image.sizes &&
+                event.image.sizes.thumbnail &&
+                event.image.sizes.thumbnail.url ? (
+                  <Avatar
+                    alt={event.title}
+                    src={event.image.sizes.thumbnail.url}
+                  />
+                ) : (
+                  <Avatar>
+                    <EventIcon />
+                  </Avatar>
+                )}
+
+                <ListItemText
+                  primary={event.title}
+                  secondary={formatDate(event.start_date)}
+                />
+              </ListItem>
+            );
+          })}
         </List>
+        {events.length > VISIBLE_EVENTS && (
+          <Button color="primary" onClick={this.moreEventsClickHandler}>
+            Fleiri viðburðir
+          </Button>
+        )}
       </div>
     );
   }

@@ -2,7 +2,11 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import getEvents, { setEventsLoading } from "../../actions/events";
+import classNames from "classnames";
+import getEvents, {
+  setEventsLoading,
+  setActiveEvent
+} from "../../actions/events";
 import getCategories, { setCategoriesLoading } from "../../actions/categories";
 import Posts from "../../components/Posts";
 import Container from "../../components/Container";
@@ -21,21 +25,45 @@ class Home extends PureComponent {
     }
   }
 
+  /**
+   * Event click handler
+   * Dispatches setActiveEvent action and routes user
+   * to event page
+   * @param {Number} id - Event id
+   */
+  eventClickHandler = id => {
+    const { actions, history, events } = this.props;
+    const event = events.filter(event => event.id === id);
+
+    if (event.length > 0) {
+      actions.setActiveEvent(event[0]);
+    }
+
+    history.push(`/vidburdir/${id}`);
+  };
+
   render() {
     const { newsOnly, events, history } = this.props;
 
     return (
-      <Container className={s.container}>
-        <div className={s.postsContainer}>
+      <Container
+        className={classNames(s.container, {
+          [s.containerSmaller]: newsOnly
+        })}
+      >
+        <div className={newsOnly ? s.postOnlyContainer : s.postsContainer}>
           <Posts showPagination={newsOnly} moreButton={!newsOnly} />
         </div>
-        <div className={s.eventsContainer}>
-          <EventsList
-            title="Framundan í glímunni"
-            events={events}
-            history={history}
-          />
-        </div>
+        {!newsOnly && (
+          <div className={s.eventsContainer}>
+            <EventsList
+              title="Framundan í glímunni"
+              events={events}
+              onClick={this.eventClickHandler}
+              history={history}
+            />
+          </div>
+        )}
       </Container>
     );
   }
@@ -83,7 +111,13 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { getEvents, setEventsLoading, getCategories, setCategoriesLoading },
+      {
+        getEvents,
+        setEventsLoading,
+        setActiveEvent,
+        getCategories,
+        setCategoriesLoading
+      },
       dispatch
     )
   };
