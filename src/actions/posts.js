@@ -106,14 +106,16 @@ export function getPost(id) {
         });
       }
 
-      dispatch({
+      return dispatch({
         type: SET_ACTIVE_POST,
         payload
       });
     } catch (error) {
+      console.error(error);
+
       dispatch({
         type: SET_POSTS_ERROR,
-        payload: error
+        payload: true
       });
     }
   };

@@ -55,7 +55,7 @@ class PostBig extends PureComponent {
     // Sets active post in Redux state
     await actions.setActivePost(data);
 
-    // Navigates user to /post route
+    // Navigates user to /post/:id route
     history.push(`/frett/${data.id}`);
   };
 

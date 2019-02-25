@@ -53,7 +53,7 @@ class Post extends PureComponent {
     // Sets active post in Redux state
     await actions.setActivePost(data);
 
-    // Navigates user to /post route
+    // Navigates user to /frett/:id route
     history.push(`/frett/${data.id}`);
   };
 

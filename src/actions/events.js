@@ -3,16 +3,18 @@ import {
   SET_EVENTS,
   SET_EVENTS_ERROR,
   SET_EVENTS_LOADING,
-  SET_ACTIVE_EVENT
+  SET_ACTIVE_EVENT,
+  SET_EVENTS_PAGE
 } from "../constants/events";
 
 /**
  * Sets events loading Redux state
+ * @param {Boolean} loading - Loading boolean state
  */
-export function setEventsLoading() {
+export function setEventsLoading(loading = true) {
   return {
     type: SET_EVENTS_LOADING,
-    payload: true
+    payload: loading
   };
 }
 
@@ -28,6 +30,18 @@ export function setActiveEvent(event) {
 }
 
 /**
+ * Sets events pagination page in Redux state
+ *
+ * @param {Number} page - Pagination current page number
+ */
+export function setEventPage(page) {
+  return {
+    type: SET_EVENTS_PAGE,
+    payload: page
+  };
+}
+
+/**
  * Gets event and dispatches actions
  *
  * @param {String} id - Post id
@@ -35,7 +49,7 @@ export function setActiveEvent(event) {
 export function getEvent(id) {
   return async dispatch => {
     try {
-      const { data } = await fetchEvents(id);
+      const { data } = await fetchEvents(null, id);
 
       if (data instanceof Error) {
         dispatch({
@@ -61,12 +75,13 @@ export function getEvent(id) {
 
 /**
  * Gets events and dispatches actions
+ * @param {Number} page - page number
  */
-function getEvents() {
+function getEvents(page) {
   return async dispatch => {
     try {
-      // Fetch posts with categories type events
-      const { data } = await fetchEvents();
+      // Fetch events
+      const { data, totalPages } = await fetchEvents(page);
 
       if (data instanceof Error) {
         console.error(data);
@@ -77,14 +92,17 @@ function getEvents() {
         });
       }
 
-      dispatch({
+      return dispatch({
         type: SET_EVENTS,
-        payload: data.events
+        payload: {
+          data: data.events,
+          totalPages: Number(totalPages)
+        }
       });
     } catch (error) {
       console.error(error);
 
-      dispatch({
+      return dispatch({
         type: SET_EVENTS_ERROR,
         payload: true
       });

@@ -61,7 +61,6 @@ class PhotoAlbums extends PureComponent {
       actions.setPhotosLoading();
 
       if (qsPageParam.page) {
-        const pageNumber = Number(qsPageParam.page);
         actions.setPhotosPage(pageNumber);
         actions.getPhotos(null, pageNumber);
       } else {

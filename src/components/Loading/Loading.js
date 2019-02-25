@@ -1,12 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Container from "../Container";
 import s from "./Loading.module.scss";
 
-function Loading({ text }) {
+function Loading({ text, noMinHeight }) {
   return (
-    <Container className={s.loadingContainer}>
+    <Container
+      className={classNames(s.loadingContainer, {
+        [s.noMinHeight]: noMinHeight
+      })}
+    >
       <CircularProgress />
       {text && <p>{text}</p>}
     </Container>
@@ -14,11 +19,13 @@ function Loading({ text }) {
 }
 
 Loading.defaultProps = {
-  text: ""
+  text: "",
+  noMinHeight: false
 };
 
 Loading.propTypes = {
-  text: PropTypes.string
+  text: PropTypes.string,
+  noMinHeight: PropTypes.bool
 };
 
 export default Loading;

@@ -13,7 +13,7 @@ import Loading from "../Loading";
 import Post from "../Post";
 import PostBig from "../PostBig";
 import Pagination from "../Pagination";
-import NoData from "../../components/NoData";
+import NoData from "../NoData";
 import s from "./Posts.module.scss";
 
 const styles = theme => ({
@@ -85,7 +85,6 @@ class Posts extends PureComponent {
       actions.setPostsLoading();
 
       if (qsPageParam.page) {
-        const pageNumber = Number(qsPageParam.page);
         actions.setPostsPage(pageNumber);
         actions.getPosts(pageNumber);
       } else {

@@ -14,14 +14,32 @@ import EventsList from "../../components/EventsList";
 import s from "./Home.module.scss";
 
 class Home extends PureComponent {
+  static defaultProps = {
+    newsOnly: false,
+    error: false
+  };
+
+  static propTypes = {
+    actions: PropTypes.object.isRequired,
+    events: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    newsOnly: PropTypes.bool,
+    error: PropTypes.bool
+  };
+
   async componentDidMount() {
     const { actions } = this.props;
+    actions.setEventsLoading();
     actions.setCategoriesLoading();
     const eventCategory = await actions.getCategories("event");
 
-    if (eventCategory[0] && eventCategory[0].id) {
-      actions.setEventsLoading();
-      actions.getEvents([eventCategory[0].id]);
+    if (eventCategory[0]) {
+      actions.getEvents(1);
+    } else {
+      actions.setEventsLoading(false);
     }
   }
 
@@ -29,21 +47,19 @@ class Home extends PureComponent {
    * Event click handler
    * Dispatches setActiveEvent action and routes user
    * to event page
-   * @param {Number} id - Event id
+   * @param {Object} event - Event object
    */
-  eventClickHandler = id => {
-    const { actions, history, events } = this.props;
-    const event = events.filter(event => event.id === id);
+  eventClickHandler = event => {
+    const { actions, history } = this.props;
 
-    if (event.length > 0) {
-      actions.setActiveEvent(event[0]);
+    if (event) {
+      actions.setActiveEvent(event);
+      history.push(`/vidburdir/${event.id}`);
     }
-
-    history.push(`/vidburdir/${id}`);
   };
 
   render() {
-    const { newsOnly, events, history } = this.props;
+    const { newsOnly, events, history, loading } = this.props;
 
     return (
       <Container
@@ -59,6 +75,7 @@ class Home extends PureComponent {
             <EventsList
               title="Framundan í glímunni"
               events={events}
+              loading={loading}
               onClick={this.eventClickHandler}
               history={history}
             />
@@ -68,21 +85,6 @@ class Home extends PureComponent {
     );
   }
 }
-
-Home.defaultProps = {
-  newsOnly: false,
-  error: false
-};
-
-Home.propTypes = {
-  events: PropTypes.array.isRequired,
-  loading: PropTypes.bool.isRequired,
-  history: PropTypes.object.isRequired,
-  match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  newsOnly: PropTypes.bool,
-  error: PropTypes.bool
-};
 
 /**
  * Maps state to components props

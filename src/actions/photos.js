@@ -55,10 +55,18 @@ export function setActiveAlbum(id, slug) {
  * @param {Number} pageNumber - Pagination page number
  */
 function getPhotos(slug, pageNumber) {
-  return async dispatch => {
+  return async (dispatch, getStore) => {
     try {
+      const { photos } = getStore();
+
+      // Check if photos has already be fetched
+      if (photos.data.length > 0 && pageNumber === 1) {
+        return null;
+      }
+
       // Fetch posts
       const { data, totalPages } = await fetchPhotos(slug, pageNumber);
+
       if (data instanceof Error) {
         console.error(data);
 

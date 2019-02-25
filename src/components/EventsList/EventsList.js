@@ -10,6 +10,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
 import EventIcon from "@material-ui/icons/Event";
 import formatDate from "../../utils/dateHelper";
+import Loading from "../Loading";
 import config from "../../config";
 
 const { VISIBLE_EVENTS } = config;
@@ -31,6 +32,7 @@ class EventsList extends PureComponent {
   };
 
   static propTypes = {
+    loading: PropTypes.bool.isRequired,
     events: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -40,11 +42,11 @@ class EventsList extends PureComponent {
 
   /**
    * Calls onClick callback function
-   * @param {Number} id - Event id
+   * @param {Object} event - Event object
    */
-  onClickHandler(id) {
+  onClickHandler(event) {
     const { onClick } = this.props;
-    onClick(id);
+    onClick(event);
   }
 
   moreEventsClickHandler = () => {
@@ -53,7 +55,11 @@ class EventsList extends PureComponent {
   };
 
   render() {
-    const { classes, title, events } = this.props;
+    const { classes, title, events, loading } = this.props;
+
+    if (loading) {
+      return <Loading noMinHeight text="Sæki viðburði..." />;
+    }
 
     if (events.length === 0) {
       return (
@@ -73,39 +79,33 @@ class EventsList extends PureComponent {
           </Fragment>
         )}
         <List className={classes.root}>
-          {events.map((event, idx) => {
-            if (idx < VISIBLE_EVENTS) {
-              return null;
-            }
-
-            return (
-              <ListItem
-                data-id={event.id}
-                button
-                onClick={this.onClickHandler.bind(this, event.id)}
-                key={event.id}
-              >
-                {event.image &&
-                event.image.sizes &&
-                event.image.sizes.thumbnail &&
-                event.image.sizes.thumbnail.url ? (
-                  <Avatar
-                    alt={event.title}
-                    src={event.image.sizes.thumbnail.url}
-                  />
-                ) : (
-                  <Avatar>
-                    <EventIcon />
-                  </Avatar>
-                )}
-
-                <ListItemText
-                  primary={event.title}
-                  secondary={formatDate(event.start_date)}
+          {events.splice(0, VISIBLE_EVENTS).map(event => (
+            <ListItem
+              data-id={event.id}
+              button
+              onClick={this.onClickHandler.bind(this, event)}
+              key={event.id}
+            >
+              {event.image &&
+              event.image.sizes &&
+              event.image.sizes.thumbnail &&
+              event.image.sizes.thumbnail.url ? (
+                <Avatar
+                  alt={event.title}
+                  src={event.image.sizes.thumbnail.url}
                 />
-              </ListItem>
-            );
-          })}
+              ) : (
+                <Avatar>
+                  <EventIcon />
+                </Avatar>
+              )}
+
+              <ListItemText
+                primary={event.title}
+                secondary={formatDate(event.start_date)}
+              />
+            </ListItem>
+          ))}
         </List>
         {events.length > VISIBLE_EVENTS && (
           <Button color="primary" onClick={this.moreEventsClickHandler}>

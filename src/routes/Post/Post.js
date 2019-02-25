@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -14,15 +13,18 @@ import Button from "@material-ui/core/Button";
 import allowNull from "../../utils/propTypesHelpers";
 import formatDate from "../../utils/dateHelper";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
-import { getPost } from "../../actions/posts";
+import { getPost, setPostsLoading } from "../../actions/posts";
 import Container from "../../components/Container";
+import Loading from "../../components/Loading";
 import Tooltip from "../../components/Tooltip";
+import NoData from "../../components/NoData";
 import s from "./Post.module.scss";
 
 class Post extends PureComponent {
   static propTypes = {
     post: allowNull(PropTypes.object.isRequired),
     error: allowNull(PropTypes.bool.isRequired),
+    loading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired
   };
 
@@ -36,6 +38,7 @@ class Post extends PureComponent {
     } = this.props;
 
     if (!post && id) {
+      actions.setPostsLoading();
       actions.getPost(id);
     }
   }
@@ -45,15 +48,6 @@ class Post extends PureComponent {
     history.goBack();
   };
 
-  renderLoading() {
-    return (
-      <Container className={s.textCenter}>
-        <CircularProgress />
-        <p>Sæki frétt...</p>
-      </Container>
-    );
-  }
-
   renderNoPost() {
     return (
       <Container className={s.textCenter}>
@@ -62,14 +56,20 @@ class Post extends PureComponent {
     );
   }
 
-  render() {
-    const { post, error } = this.props;
+  renderNoPosts() {
+    return (
+      <NoData textCenter={false} text="Við fundum enga frétt á þessum hlekk." />
+    );
+  }
 
-    if (error) {
-      return this.renderNoPost();
+  render() {
+    const { post, error, loading } = this.props;
+
+    if (loading) {
+      return <Loading text="Sæki frétt..." />;
     }
 
-    if (!post) {
+    if (error || !post) {
       return this.renderNoPost();
     }
 
@@ -148,12 +148,13 @@ class Post extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    blog: { post, error }
+    blog: { post, error, loading }
   } = state;
 
   return {
     post: post,
-    error
+    error,
+    loading
   };
 }
 
@@ -165,7 +166,7 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ getPost }, dispatch)
+    actions: bindActionCreators({ getPost, setPostsLoading }, dispatch)
   };
 }
 

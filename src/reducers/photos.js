@@ -33,7 +33,12 @@ function posts(state = initialState, action) {
       return { ...state, loading: action.payload };
 
     case SET_ACITVE_ALBUM:
-      return { ...state, loading: false, activeAlbum: action.payload };
+      return {
+        ...state,
+        loading: false,
+        activeAlbum: action.payload,
+        error: false
+      };
 
     case SET_PHOTOS_PAGE:
       return { ...state, page: action.payload };

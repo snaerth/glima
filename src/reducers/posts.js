@@ -9,17 +9,24 @@ import {
 const initialState = {
   data: [],
   totalPages: 0,
+  page: 1,
   post: null,
   error: false,
-  loading: false,
-  page: 1
+  loading: false
 };
 
 function posts(state = initialState, action) {
   switch (action.type) {
     case SET_POSTS:
       const { data, totalPages } = action.payload;
-      return { ...state, data, totalPages, loading: false, error: false };
+      return {
+        ...state,
+        data,
+        totalPages,
+        loading: false,
+        error: false,
+        post: null
+      };
 
     case SET_POSTS_ERROR:
       return {
@@ -30,7 +37,7 @@ function posts(state = initialState, action) {
       };
 
     case SET_ACTIVE_POST:
-      return { ...state, post: action.payload };
+      return { ...state, post: action.payload, loading: false, error: false };
 
     case SET_POSTS_LOADING:
       return { ...state, loading: action.payload };

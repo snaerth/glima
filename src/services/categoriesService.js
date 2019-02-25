@@ -14,7 +14,7 @@ async function fetchCategories(slug) {
     let url = `${API_URL}/wp-json/wp/v2/categories`;
 
     if (slug) {
-      url = `${url}?slug=${slug}}`;
+      url = `${url}?slug=${slug}`;
     }
 
     const response = await axois.get(url);
