@@ -11,6 +11,7 @@ import getCategories, { setCategoriesLoading } from "../../actions/categories";
 import Posts from "../../components/Posts";
 import Container from "../../components/Container";
 import EventsList from "../../components/EventsList";
+import Banner from "../../components/Banner";
 import s from "./Home.module.scss";
 
 class Home extends PureComponent {
@@ -62,26 +63,29 @@ class Home extends PureComponent {
     const { newsOnly, events, history, loading } = this.props;
 
     return (
-      <Container
-        className={classNames(s.container, {
-          [s.containerSmaller]: newsOnly
-        })}
-      >
-        <div className={newsOnly ? s.postOnlyContainer : s.postsContainer}>
-          <Posts showPagination={newsOnly} moreButton={!newsOnly} />
-        </div>
-        {!newsOnly && (
-          <div className={s.eventsContainer}>
-            <EventsList
-              title="Framundan í glímunni"
-              events={events}
-              loading={loading}
-              onClick={this.eventClickHandler}
-              history={history}
-            />
+      <div>
+        {!newsOnly && <Banner />}
+        <Container
+          className={classNames(s.container, {
+            [s.containerSmaller]: newsOnly
+          })}
+        >
+          <div className={newsOnly ? s.postOnlyContainer : s.postsContainer}>
+            <Posts showPagination={newsOnly} moreButton={!newsOnly} />
           </div>
-        )}
-      </Container>
+          {!newsOnly && (
+            <div className={s.eventsContainer}>
+              <EventsList
+                title="Framundan í glímunni"
+                events={events}
+                loading={loading}
+                onClick={this.eventClickHandler}
+                history={history}
+              />
+            </div>
+          )}
+        </Container>
+      </div>
     );
   }
 }
