@@ -8,9 +8,11 @@ import HomeRoute from "./routes/Home";
 import PostRoute from "./routes/Post";
 import EventRoute from "./routes/Event";
 import EventsRoute from "./routes/Events";
+import PageRoute from "./routes/Page";
 import PhotoAlbumsRoute from "./routes/PhotoAlbums";
 import PhotosRoute from "./routes/Photos";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Drawer from "./components/Drawer";
 import config from "./config";
 import s from "./App.module.scss";
@@ -34,20 +36,24 @@ class App extends PureComponent {
           <ScrollToTop>
             <Drawer toggle={this.toggle} open={drawerOpen} />
             <Header menuClick={this.toggle} menuOpenState={drawerOpen} />
-            <Switch>
-              <Route exact path="/" component={HomeRoute} />
-              <Route
-                exact
-                path="/frettir"
-                render={props => <HomeRoute {...props} newsOnly />}
-              />
-              <Route exact path="/frett/:id" component={PostRoute} />
-              <Route exact path="/myndir/:slug/:id" component={PhotosRoute} />
-              <Route exact path="/myndir" component={PhotoAlbumsRoute} />
-              <Route exact path="/vidburdir" component={EventsRoute} />
-              <Route exact path="/vidburdir/:id" component={EventRoute} />
-              <Route component={NoData} />
-            </Switch>
+            <div className={s.routeContainer}>
+              <Switch>
+                <Route exact path="/" component={HomeRoute} />
+                <Route
+                  exact
+                  path="/frettir"
+                  render={props => <HomeRoute {...props} newsOnly />}
+                />
+                <Route exact path="/frett/:id" component={PostRoute} />
+                <Route exact path="/myndir/:slug/:id" component={PhotosRoute} />
+                <Route exact path="/myndir" component={PhotoAlbumsRoute} />
+                <Route exact path="/vidburdir" component={EventsRoute} />
+                <Route exact path="/vidburdir/:id" component={EventRoute} />
+                <Route exact path="/page/:slug/:id" component={PageRoute} />
+                <Route component={NoData} />
+              </Switch>
+            </div>
+            <Footer />
           </ScrollToTop>
         </Router>
         <div className={s.emailButton}>

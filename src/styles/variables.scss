@@ -1,6 +1,7 @@
 $primary-color: #2196f3;
 $secondary-color: #2196f3;
 $color-white: #ffffff;
+$color-grey: #fafafa;
 
 /* Media queries sizes  */
 $page-width-min: 320px;
@@ -11,3 +12,6 @@ $page-width-desktop: 992px;
 $page-width-ipad-landscape: 1024px;
 $page-width-laptop: 1280px;
 $page-width-max: 1420px;
+
+/* Gutter  */
+$gutter: 15px;

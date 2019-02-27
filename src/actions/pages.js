@@ -66,7 +66,7 @@ function sortPages(pages) {
  *
  * @param {Number} pageNumber - Posts Rest API page number
  */
-function getPosts(pageNumber = 1) {
+function getPages(pageNumber = 1) {
   return async dispatch => {
     try {
       // Fetch pages
@@ -117,10 +117,7 @@ export function getPage(id) {
         });
       }
 
-      return dispatch({
-        type: SET_ACTIVE_PAGE,
-        payload
-      });
+      return dispatch(setActivePage(payload));
     } catch (error) {
       console.error(error);
 
@@ -132,4 +129,4 @@ export function getPage(id) {
   };
 }
 
-export default getPosts;
+export default getPages;

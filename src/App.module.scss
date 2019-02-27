@@ -6,6 +6,10 @@
   right: 15px;
 }
 
+.routeContainer {
+  min-height: 600px;
+}
+
 @media only screen and (min-width: $page-width-ipad) {
   .emailButton {
     position: fixed;

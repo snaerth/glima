@@ -1,0 +1,47 @@
+@import "../../styles/variables.scss";
+
+.containerExtra {
+  padding: 0 15px 40px;
+
+  figure {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  blockquote {
+    padding-left: 1em;
+    margin: 3em 0;
+    border-left: 2px solid $primary-color;
+  }
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.card {
+  padding: 20px;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.media {
+  margin: 0 -20px;
+  width: calc(100% + 40px);
+  height: 0;
+  padding-top: 56.25%;
+}
+
+@media only screen and (min-width: $page-width-ipad) {
+  .containerExtra {
+    padding: 40px 20px;
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad-landscape) {
+  .media {
+    margin: 0;
+    width: 100%;
+  }
+}

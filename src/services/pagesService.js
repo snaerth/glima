@@ -23,7 +23,11 @@ export async function fetchPage(id) {
       `${API_URL}/wp-json/wp/v2/pages/${id}?_embed`
     );
 
-    return data;
+    if (data instanceof Error) {
+      return data;
+    }
+
+    return Pick(data, desiredPageProps);
   } catch (error) {
     return error;
   }

@@ -17,5 +17,9 @@ export default {
     email: "gli@glima.is ",
     subject: "Fyrirspurn frá vef",
     body: ""
+  },
+  phone: {
+    number: "+3547791324",
+    formatted: "779-1324"
   }
 };

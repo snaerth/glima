@@ -24,8 +24,7 @@ function posts(state = initialState, action) {
         sortedData,
         totalPages,
         loading: false,
-        error: false,
-        page: null
+        error: false
       };
 
     case SET_PAGES_ERROR:

@@ -4,25 +4,17 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import allowNull from "../../utils/propTypesHelpers";
-import formatDate from "../../utils/dateHelper";
-import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
-import { getPost, setPostsLoading } from "../../actions/posts";
+import { getPage, setPagesLoading } from "../../actions/pages";
 import Container from "../../components/Container";
 import Loading from "../../components/Loading";
-import Tooltip from "../../components/Tooltip";
 import NoData from "../../components/NoData";
-import s from "./Post.module.scss";
+import s from "./Page.module.scss";
 
-class Post extends PureComponent {
+class Page extends PureComponent {
   static propTypes = {
-    post: allowNull(PropTypes.object.isRequired),
+    page: allowNull(PropTypes.object.isRequired),
     error: allowNull(PropTypes.bool.isRequired),
     loading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired
@@ -38,8 +30,8 @@ class Post extends PureComponent {
     } = this.props;
 
     if (!post && id) {
-      actions.setPostsLoading();
-      actions.getPost(id);
+      actions.setPagesLoading();
+      actions.getPage(id);
     }
   }
 
@@ -48,24 +40,22 @@ class Post extends PureComponent {
     history.goBack();
   };
 
-  renderNoPosts() {
-    return (
-      <NoData textCenter={false} text="Við fundum enga frétt á þessum hlekk." />
-    );
+  renderNoPage() {
+    return <NoData textCenter={false} />;
   }
 
   render() {
-    const { post, error, loading } = this.props;
+    const { page, error, loading } = this.props;
 
     if (loading) {
-      return <Loading text="Sæki frétt..." />;
+      return <Loading text="Sæki síðu..." />;
     }
 
-    if (error || !post) {
-      return this.renderNoPost();
+    if (error || !page) {
+      return this.renderNoPage();
     }
 
-    const { content, title, date, _embedded } = post;
+    const { content, title, _embedded } = page;
     const featuredmedia = _embedded["wp:featuredmedia"];
     let img = null;
 
@@ -73,7 +63,6 @@ class Post extends PureComponent {
       img = featuredmedia[0].media_details.sizes.full.source_url;
     }
 
-    const author = _embedded.author[0];
     return (
       <Container className={s.containerExtra}>
         {img && (
@@ -86,39 +75,6 @@ class Post extends PureComponent {
         )}
         <h2 className={s.title}>{title.rendered}</h2>
         <div>
-          <List className={s.author}>
-            <ListItem>
-              <Tooltip
-                interactive
-                open
-                title={
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={author.name}
-                        src={author["avatar_urls"]["96"]}
-                        className={s.bigAvatar}
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={author.name}
-                      secondary={author.description}
-                    />
-                  </ListItem>
-                }
-              >
-                <Avatar
-                  alt={author.name}
-                  src={author["avatar_urls"]["96"]}
-                  className={s.bigAvatar}
-                />
-              </Tooltip>
-              <ListItemText
-                primary={capitalizeFirstLetter(author.name)}
-                secondary={formatDate(date)}
-              />
-            </ListItem>
-          </List>
           <Typography component="article">
             <span dangerouslySetInnerHTML={{ __html: content.rendered }} />
           </Typography>
@@ -140,11 +96,11 @@ class Post extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    blog: { post, error, loading }
+    pages: { page, error, loading }
   } = state;
 
   return {
-    post: post,
+    page,
     error,
     loading
   };
@@ -158,11 +114,11 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ getPost, setPostsLoading }, dispatch)
+    actions: bindActionCreators({ getPage, setPagesLoading }, dispatch)
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Post);
+)(Page);

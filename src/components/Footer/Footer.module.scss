@@ -1,0 +1,60 @@
+@import "../../styles/variables.scss";
+
+.footer {
+  background-color: $color-grey;
+  padding: 3rem 1.5rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 $gutter;
+  max-width: $page-width-max;
+  text-align: center;
+
+  p * {
+    margin-bottom: 10px;
+  }
+
+  span,
+  strong {
+    font-size: 18px;
+    display: block;
+  }
+
+  a {
+    display: inline;
+  }
+
+  .dot {
+    display: none;
+    padding: 0 10px;
+  }
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+}
+
+@media only screen and (min-width: $page-width-desktop) {
+  .container {
+    flex-direction: column-reverse;
+
+    p * {
+      margin-bottom: 0;
+    }
+
+    span,
+    strong,
+    .dot {
+      display: inline;
+    }
+  }
+
+  .logo {
+    margin-top: 20px;
+  }
+}
