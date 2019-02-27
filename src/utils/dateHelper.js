@@ -9,6 +9,12 @@ const months = "janúar_febrúar_mars_apríl_maí_júní_júlí_ágúst_septembe
  * @returns {String} DD. monthname YYYY - HH:MM
  */
 function formatDate(date, showClock = true) {
+  // This is for mobile issues, all browser support ISO8601 format
+  if (date.includes(" ")) {
+    date = date.replace(" ", "T");
+    date = date + "Z";
+  }
+
   const dateObj = new Date(date);
   let hours = dateObj.getHours();
   let minutes = dateObj.getMinutes();

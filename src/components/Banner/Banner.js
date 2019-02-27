@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { ReactComponent as Logo } from "../../assets/img/glima_logo.svg";
 import s from "./Banner.module.scss";
 
@@ -10,7 +9,5 @@ function Banner() {
     </div>
   );
 }
-
-Banner.propTypes = {};
 
 export default Banner;

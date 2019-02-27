@@ -1,0 +1,4 @@
+export const SET_PAGES = "SET_PAGES";
+export const SET_PAGES_ERROR = "SET_PAGES_ERROR";
+export const SET_ACTIVE_PAGE = "SET_ACTIVE_PAGE";
+export const SET_PAGES_LOADING = "SET_PAGES_LOADING";

@@ -39,7 +39,8 @@ const styles = theme => ({
 });
 
 function Header(props) {
-  const { classes } = props;
+  const { classes, menuClick } = props;
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -49,6 +50,7 @@ function Header(props) {
               className={classes.menuButton}
               color="inherit"
               aria-label="Menu"
+              onClick={() => menuClick(true)}
             >
               <MenuIcon />
             </IconButton>
@@ -90,7 +92,8 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  menuClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Header);
