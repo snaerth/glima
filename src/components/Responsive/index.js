@@ -4,6 +4,15 @@ import {
   TabletAndUp,
   Mobile,
   MobileOnly,
-  MobileAndUp
+  MobileAndUp,
+  MinToDesktop
 } from "./Responsive";
-export { Desktop, Tablet, TabletAndUp, Mobile, MobileOnly, MobileAndUp };
+export {
+  Desktop,
+  Tablet,
+  TabletAndUp,
+  Mobile,
+  MobileOnly,
+  MobileAndUp,
+  MinToDesktop
+};
