@@ -17,7 +17,12 @@ import NewsIcon from "@material-ui/icons/Description";
 import PhotoIcon from "@material-ui/icons/PhotoLibrary";
 import EventIcon from "@material-ui/icons/Event";
 import HomeIcon from "@material-ui/icons/Home";
+import Divider from "@material-ui/core/Divider";
+import InputBase from "@material-ui/core/InputBase";
+import SearchIcon from "@material-ui/icons/Search";
 import getPages, { setPagesLoading, setActivePage } from "../../actions/pages";
+import search, { setSearchValue, setSearchLoading } from "../../actions/search";
+import { ENTER } from "../../utils/keyCodes";
 
 const styles = theme => ({
   root: {
@@ -32,6 +37,39 @@ const styles = theme => ({
   noLink: {
     textDecoration: "none",
     color: "inherit"
+  },
+  search: {
+    marginTop: 10,
+    marginBottom: 10,
+    position: "relative",
+    width: "100%"
+  },
+  searchIcon: {
+    width: theme.spacing.unit * 9,
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  inputRoot: {
+    color: "inherit",
+    width: "100%"
+  },
+  inputInput: {
+    paddingTop: theme.spacing.unit,
+    paddingRight: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit,
+    paddingLeft: theme.spacing.unit * 10,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: 120,
+      "&:focus": {
+        width: 200
+      }
+    }
   }
 });
 
@@ -41,6 +79,7 @@ class DrawerComp extends Component {
   };
 
   static propTypes = {
+    searchValue: PropTypes.string.isRequired,
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
@@ -76,6 +115,27 @@ class DrawerComp extends Component {
       });
     }
   }
+
+  onSearchKeyPress = e => {
+    const { history, toggle, actions } = this.props;
+    const { value } = e.target;
+
+    if (e.which === ENTER || e.keyCode === ENTER) {
+      actions.setSearchLoading(true);
+      actions.search(value);
+      history.push(`/leit/${value}`);
+      toggle(false);
+    }
+  };
+
+  onSearchChange = e => {
+    const { actions } = this.props;
+    const {
+      target: { value }
+    } = e;
+
+    actions.setSearchValue(value);
+  };
 
   /**
    * Link click handler
@@ -121,11 +181,27 @@ class DrawerComp extends Component {
   };
 
   render() {
-    const { open, classes, pages } = this.props;
+    const { open, classes, pages, searchValue } = this.props;
     const { collapseObj } = this.state;
 
     return (
       <Drawer open={open} onClose={this.toggleDrawer(false)}>
+        <div aria-describedby="search" className={classes.search}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Leita…"
+            value={searchValue}
+            onKeyPress={this.onSearchKeyPress}
+            onChange={this.onSearchChange}
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput
+            }}
+          />
+        </div>
+        <Divider />
         <List component="nav" className={classes.root}>
           <Link
             to="/"
@@ -239,10 +315,12 @@ class DrawerComp extends Component {
  */
 function mapStateToProps(state) {
   const {
-    pages: { sortedData, loading, error }
+    pages: { sortedData, loading, error },
+    search: { value }
   } = state;
 
   return {
+    searchValue: value,
     pages: sortedData,
     loading,
     error
@@ -258,7 +336,14 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
-      { getPages, setPagesLoading, setActivePage },
+      {
+        getPages,
+        setPagesLoading,
+        setActivePage,
+        setSearchValue,
+        setSearchLoading,
+        search
+      },
       dispatch
     )
   };

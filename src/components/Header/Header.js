@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withRouter } from "react-router";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -21,8 +22,8 @@ import NewsIcon from "@material-ui/icons/Description";
 import PhotoIcon from "@material-ui/icons/PhotoLibrary";
 import EventIcon from "@material-ui/icons/Event";
 import search, { setSearchValue, setSearchLoading } from "../../actions/search";
-import { ENTER } from "../../utils/keyCodes";
-import { MobileAndUp, Desktop, MinToDesktop } from "../Responsive";
+import { appDefault } from "../../utils/createMuiTheme";
+import { TabletAndUp, Desktop, MinToDesktop } from "../Responsive";
 import SearchResults from "../SearchResults";
 import Container from "../Container";
 
@@ -30,7 +31,7 @@ const styles = theme => ({
   container: {
     margin: "0 auto",
     width: "100%",
-    maxWidth: 1420,
+    maxWidth: appDefault.pageWidthMax,
     padding: 0
   },
   title: {
@@ -108,6 +109,7 @@ const styles = theme => ({
 
 class Header extends PureComponent {
   static propTypes = {
+    location: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     menuClick: PropTypes.func.isRequired,
     searchValue: PropTypes.string.isRequired
@@ -118,18 +120,13 @@ class Header extends PureComponent {
     open: false
   };
 
-  onSearchKeyPress = e => {
-    const { value } = e.target;
-
-    if (e.which === ENTER || e.keyCode === ENTER) {
-      console.log(value);
-    }
-  };
-
   onBlur = () => {
+    const { actions } = this.props;
     this.setState({
       open: false
     });
+
+    actions.setSearchValue("");
   };
 
   onSearchChange = e => {
@@ -155,9 +152,10 @@ class Header extends PureComponent {
   };
 
   render() {
-    const { classes, menuClick, searchValue } = this.props;
+    const { classes, menuClick, searchValue, location } = this.props;
     const { anchorEl, open } = this.state;
     const id = open ? "search-popper" : null;
+    const hidePopper = !location.pathname.startsWith("/leit/");
 
     return (
       <div className={classes.root}>
@@ -170,7 +168,7 @@ class Header extends PureComponent {
                 aria-label="Menu"
                 onClick={() => menuClick(true)}
               >
-                <MenuIcon fontSize="large" />
+                <MenuIcon />
               </IconButton>
               <Desktop>
                 <Link to="/" className={classes.noLink}>
@@ -183,7 +181,8 @@ class Header extends PureComponent {
                   </Typography>
                 </Link>
               </Desktop>
-              <MobileAndUp>
+
+              <TabletAndUp>
                 <div className={classes.grow} />
                 <div aria-describedby={id} className={classes.search}>
                   <div className={classes.searchIcon}>
@@ -200,21 +199,23 @@ class Header extends PureComponent {
                     }}
                   />
                 </div>
-                <Popper id={id} open={open} anchorEl={anchorEl} transition>
-                  {({ TransitionProps }) => (
-                    <Fade {...TransitionProps} timeout={350}>
-                      <Paper className={classes.paper}>
-                        <SearchResults />
-                      </Paper>
-                    </Fade>
-                  )}
-                </Popper>
-              </MobileAndUp>
+                {hidePopper && (
+                  <Popper id={id} open={open} anchorEl={anchorEl} transition>
+                    {({ TransitionProps }) => (
+                      <Fade {...TransitionProps} timeout={350}>
+                        <Paper className={classes.paper}>
+                          <SearchResults />
+                        </Paper>
+                      </Fade>
+                    )}
+                  </Popper>
+                )}
+              </TabletAndUp>
               <div className={classes.rightWing}>
                 <Link to="/frettir/?page=1" className={classes.noLink}>
                   <MinToDesktop>
                     <IconButton color="inherit" aria-label="News">
-                      <NewsIcon fontSize="large" />
+                      <NewsIcon />
                     </IconButton>
                   </MinToDesktop>
                   <Desktop>
@@ -226,7 +227,7 @@ class Header extends PureComponent {
                 <Link to="/vidburdir/?page=1" className={classes.noLink}>
                   <MinToDesktop>
                     <IconButton color="inherit" aria-label="Events">
-                      <EventIcon fontSize="large" />
+                      <EventIcon />
                     </IconButton>
                   </MinToDesktop>
                   <Desktop>
@@ -238,7 +239,7 @@ class Header extends PureComponent {
                 <Link to="/myndir/?page=1" className={classes.noLink}>
                   <MinToDesktop>
                     <IconButton color="inherit" aria-label="Photos">
-                      <PhotoIcon fontSize="large" />
+                      <PhotoIcon />
                     </IconButton>
                   </MinToDesktop>
                   <Desktop>
@@ -287,7 +288,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withStyles(styles)(Header));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(withStyles(styles)(Header))
+);

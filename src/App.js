@@ -11,6 +11,7 @@ import EventsRoute from "./routes/Events";
 import PageRoute from "./routes/Page";
 import PhotoAlbumsRoute from "./routes/PhotoAlbums";
 import PhotosRoute from "./routes/Photos";
+import SearchRoute from "./routes/Search";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Drawer from "./components/Drawer";
@@ -50,6 +51,7 @@ class App extends PureComponent {
                 <Route exact path="/vidburdir" component={EventsRoute} />
                 <Route exact path="/vidburdir/:id" component={EventRoute} />
                 <Route exact path="/page/:slug/:id" component={PageRoute} />
+                <Route exact path="/leit/:search" component={SearchRoute} />
                 <Route component={NoData} />
               </Switch>
             </div>

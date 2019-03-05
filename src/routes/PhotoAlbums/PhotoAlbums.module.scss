@@ -3,7 +3,7 @@
 .container {
   margin: 0 auto;
   padding: 40px 15px 0;
-  max-width: $page-width-max;
+  max-width: $page-width-laptop - 40px;
 }
 
 .paginationContainer {
@@ -43,10 +43,6 @@
 
 .modalImage {
   width: 100%;
-}
-
-.header {
-  margin-bottom: 40px;
 }
 
 @media only screen and (min-width: $page-width-mobile) {

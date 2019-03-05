@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { withStyles } from "@material-ui/core/styles";
@@ -34,7 +35,14 @@ const styles = {
 };
 
 class SearchResults extends Component {
+  static defaultProps = {
+    showExcerpt: false,
+    containerClass: true
+  };
+
   static propTypes = {
+    showExcerpt: PropTypes.bool,
+    containerClass: PropTypes.bool,
     actions: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     results: PropTypes.object.isRequired,
@@ -78,7 +86,7 @@ class SearchResults extends Component {
    * @param {String} type - Search type
    */
   renderResults(data, type) {
-    const { classes } = this.props;
+    const { classes, showExcerpt } = this.props;
     const { title, id, excerpt, date, start_date } = data;
 
     return (
@@ -88,7 +96,9 @@ class SearchResults extends Component {
           onClick={this.searchClickhandler.bind(this, data, type)}
         >
           <ListItemText
-            className={classes.secondary}
+            className={classNames({
+              [classes.secondary]: !showExcerpt
+            })}
             primary={title && title.rendered ? title.rendered : title}
             secondary={
               excerpt.rendered ? (
@@ -112,12 +122,17 @@ class SearchResults extends Component {
     const {
       classes,
       loading,
+      containerClass,
       results: { posts, pages, events }
     } = this.props;
 
     if (loading) {
       return (
-        <div className={s.container}>
+        <div
+          className={classNames({
+            [s.container]: containerClass
+          })}
+        >
           <Loading noMinHeight text="Leita..." />
         </div>
       );
@@ -125,7 +140,11 @@ class SearchResults extends Component {
 
     if (posts.length === 0 && pages.length === 0 && events.length === 0) {
       return (
-        <div className={s.container}>
+        <div
+          className={classNames({
+            [s.container]: containerClass
+          })}
+        >
           <Typography variant="subtitle1">
             Engar Leitarniðurstöður fundust
           </Typography>
@@ -134,7 +153,11 @@ class SearchResults extends Component {
     }
 
     return (
-      <div className={s.container}>
+      <div
+        className={classNames({
+          [s.container]: containerClass
+        })}
+      >
         {posts.length > 0 && (
           <Fragment>
             <Typography variant="h6" className={classes.padding}>

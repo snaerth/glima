@@ -1,19 +1,18 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import PropTypes from "prop-types";
 import queryString from "query-string";
-import { Typography } from "@material-ui/core";
 import getPhotos, {
   setPhotosLoading,
   setPhotosPage,
   setActiveAlbum
 } from "../../actions/photos";
 import PhotosGrid from "../../components/PhotosGrid";
-import Title from "../../components/Title";
 import Loading from "../../components/Loading";
 import Pagination from "../../components/Pagination";
 import NoData from "../../components/NoData";
+import BannerSmall from "../../components/BannerSmall";
 import s from "./PhotoAlbums.module.scss";
 
 class PhotoAlbums extends PureComponent {
@@ -113,24 +112,21 @@ class PhotoAlbums extends PureComponent {
     }
 
     return (
-      <section className={s.container}>
-        <header className={s.header}>
-          <Title>Myndir úr starfinu</Title>
-          <Typography variant="body1" color="textSecondary" gutterBottom>
-            Hér fyrir neðan má sjá myndir úr glímu starfinu
-          </Typography>
-        </header>
-        <div className={s.photosGridContainer}>
-          <PhotosGrid photos={photos} onClick={this.albumClickHandler} />
-        </div>
-        <div className={s.paginationContainer}>
-          <Pagination
-            pageCount={totalPages}
-            initialPage={page}
-            onPageChangeHandler={this.paginateHandler}
-          />
-        </div>
-      </section>
+      <Fragment>
+        <BannerSmall text="Myndir úr starfinu" />
+        <section className={s.container}>
+          <div className={s.photosGridContainer}>
+            <PhotosGrid photos={photos} onClick={this.albumClickHandler} />
+          </div>
+          <div className={s.paginationContainer}>
+            <Pagination
+              pageCount={totalPages}
+              initialPage={page}
+              onPageChangeHandler={this.paginateHandler}
+            />
+          </div>
+        </section>
+      </Fragment>
     );
   }
 }

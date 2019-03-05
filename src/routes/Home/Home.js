@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -12,6 +12,7 @@ import Posts from "../../components/Posts";
 import Container from "../../components/Container";
 import EventsList from "../../components/EventsList";
 import Banner from "../../components/Banner";
+import BannerSmall from "../../components/BannerSmall";
 import s from "./Home.module.scss";
 
 class Home extends PureComponent {
@@ -63,8 +64,8 @@ class Home extends PureComponent {
     const { newsOnly, events, history, loading } = this.props;
 
     return (
-      <div>
-        {!newsOnly && <Banner />}
+      <Fragment>
+        {!newsOnly ? <Banner /> : <BannerSmall text="Fréttir" />}
         <Container
           className={classNames(s.container, {
             [s.containerSmaller]: newsOnly
@@ -85,7 +86,7 @@ class Home extends PureComponent {
             </div>
           )}
         </Container>
-      </div>
+      </Fragment>
     );
   }
 }

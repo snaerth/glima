@@ -16,6 +16,7 @@ import Container from "../../components/Container";
 import Pagination from "../../components/Pagination";
 import Loading from "../../components/Loading";
 import NoData from "../../components/NoData";
+import BannerSmall from "../../components/BannerSmall";
 import s from "./Events.module.scss";
 
 const styles = {
@@ -132,19 +133,22 @@ class Events extends PureComponent {
     const isLastPostIdx = events.length - 1;
 
     return (
-      <Container className={s.container}>
-        {events.map((event, idx) => (
-          <Fragment key={event.id}>
-            <EventItem event={event} />
-            {isLastPostIdx !== idx && <Divider className={classes.root} />}
-          </Fragment>
-        ))}
-        <Pagination
-          pageCount={totalPages}
-          initialPage={page}
-          onPageChangeHandler={this.paginateHandler}
-        />
-      </Container>
+      <Fragment>
+        <BannerSmall text="Framundan í glímunni" />
+        <Container className={s.container}>
+          {events.map((event, idx) => (
+            <Fragment key={event.id}>
+              <EventItem event={event} />
+              {isLastPostIdx !== idx && <Divider className={classes.root} />}
+            </Fragment>
+          ))}
+          <Pagination
+            pageCount={totalPages}
+            initialPage={page}
+            onPageChangeHandler={this.paginateHandler}
+          />
+        </Container>
+      </Fragment>
     );
   }
 }

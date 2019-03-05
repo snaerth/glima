@@ -3,20 +3,20 @@ import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import { Mobile, Tablet, Desktop } from "../../components/Responsive";
 
-const Title = ({ children }) => (
+const Title = ({ children, className }) => (
   <Fragment>
     <Desktop>
-      <Typography variant="h2" gutterBottom>
+      <Typography variant="h2" gutterBottom className={className}>
         {children}
       </Typography>
     </Desktop>
     <Tablet>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h3" gutterBottom className={className}>
         {children}
       </Typography>
     </Tablet>
     <Mobile>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom className={className}>
         {children}
       </Typography>
     </Mobile>
@@ -24,7 +24,8 @@ const Title = ({ children }) => (
 );
 
 Title.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
 };
 
 export default Title;
