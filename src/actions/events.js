@@ -52,13 +52,15 @@ export function getEvent(id) {
       const { data } = await fetchEvents(null, id);
 
       if (data instanceof Error) {
-        dispatch({
+        console.error(data);
+
+        return dispatch({
           type: SET_EVENTS_ERROR,
-          payload: data
+          payload: true
         });
       }
 
-      dispatch({
+      return dispatch({
         type: SET_ACTIVE_EVENT,
         payload: data
       });

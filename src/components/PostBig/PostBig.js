@@ -56,7 +56,7 @@ class PostBig extends PureComponent {
     await actions.setActivePost(data);
 
     // Navigates user to /post/:id route
-    history.push(`/frett/${data.id}`);
+    history.push(`/frett/${data.slug}/${data.id}`);
   };
 
   render() {

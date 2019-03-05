@@ -1,0 +1,16 @@
+@import "../../styles/variables.scss";
+
+.container {
+  min-width: $page-width-mobile;
+  max-width: $page-width-mobile;
+}
+
+.searchRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.noMargin p {
+  margin: 0;
+}

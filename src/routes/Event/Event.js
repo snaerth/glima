@@ -11,6 +11,7 @@ import allowNull from "../../utils/propTypesHelpers";
 import formatDate from "../../utils/dateHelper";
 import { getEvent } from "../../actions/events";
 import Container from "../../components/Container";
+import NoData from "../../components/NoData";
 import s from "./Event.module.scss";
 
 const styles = {
@@ -67,12 +68,13 @@ class Event extends PureComponent {
   render() {
     const { event, error, classes } = this.props;
 
-    if (error) {
-      return this.renderNoEvent();
-    }
-
-    if (!event) {
-      return this.renderNoEvent();
+    if (error || !event) {
+      return (
+        <NoData
+          textCenter={false}
+          text="Við fundum engan viðburð á þessum hlekk."
+        />
+      );
     }
 
     const {

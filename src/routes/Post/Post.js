@@ -48,7 +48,7 @@ class Post extends PureComponent {
     history.goBack();
   };
 
-  renderNoPosts() {
+  renderNoPost() {
     return (
       <NoData textCenter={false} text="Við fundum enga frétt á þessum hlekk." />
     );

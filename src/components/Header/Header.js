@@ -20,9 +20,10 @@ import Paper from "@material-ui/core/Paper";
 import NewsIcon from "@material-ui/icons/Description";
 import PhotoIcon from "@material-ui/icons/PhotoLibrary";
 import EventIcon from "@material-ui/icons/Event";
-import { setSearchValue } from "../../actions/search";
+import search, { setSearchValue, setSearchLoading } from "../../actions/search";
 import { ENTER } from "../../utils/keyCodes";
-import { TabletAndUp, MobileAndUp, Desktop, MinToDesktop } from "../Responsive";
+import { MobileAndUp, Desktop, MinToDesktop } from "../Responsive";
+import SearchResults from "../SearchResults";
 import Container from "../Container";
 
 const styles = theme => ({
@@ -57,7 +58,9 @@ const styles = theme => ({
     margin: theme.spacing.unit
   },
   paper: {
-    padding: theme.spacing.unit * 2
+    padding: theme.spacing.unit * 2,
+    maxHeight: 600,
+    overflowY: "auto"
   },
   search: {
     position: "relative",
@@ -104,6 +107,12 @@ const styles = theme => ({
 });
 
 class Header extends PureComponent {
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+    menuClick: PropTypes.func.isRequired,
+    searchValue: PropTypes.string.isRequired
+  };
+
   state = {
     anchorEl: null,
     open: false
@@ -133,6 +142,8 @@ class Header extends PureComponent {
 
     if (value.length > 2) {
       open = true;
+      actions.setSearchLoading(true);
+      actions.search(value);
     }
 
     this.setState({
@@ -146,7 +157,7 @@ class Header extends PureComponent {
   render() {
     const { classes, menuClick, searchValue } = this.props;
     const { anchorEl, open } = this.state;
-    const id = open ? "simple-popper" : null;
+    const id = open ? "search-popper" : null;
 
     return (
       <div className={classes.root}>
@@ -193,7 +204,7 @@ class Header extends PureComponent {
                   {({ TransitionProps }) => (
                     <Fade {...TransitionProps} timeout={350}>
                       <Paper className={classes.paper}>
-                        <Typography>The content of the Popper.</Typography>
+                        <SearchResults />
                       </Paper>
                     </Fade>
                   )}
@@ -245,11 +256,6 @@ class Header extends PureComponent {
   }
 }
 
-Header.propTypes = {
-  classes: PropTypes.object.isRequired,
-  menuClick: PropTypes.func.isRequired
-};
-
 /**
  * Maps state to components props
  *
@@ -274,7 +280,10 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ setSearchValue }, dispatch)
+    actions: bindActionCreators(
+      { setSearchValue, search, setSearchLoading },
+      dispatch
+    )
   };
 }
 

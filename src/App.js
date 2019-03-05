@@ -44,7 +44,7 @@ class App extends PureComponent {
                   path="/frettir"
                   render={props => <HomeRoute {...props} newsOnly />}
                 />
-                <Route exact path="/frett/:id" component={PostRoute} />
+                <Route exact path="/frett/:slug/:id" component={PostRoute} />
                 <Route exact path="/myndir/:slug/:id" component={PhotosRoute} />
                 <Route exact path="/myndir" component={PhotoAlbumsRoute} />
                 <Route exact path="/vidburdir" component={EventsRoute} />

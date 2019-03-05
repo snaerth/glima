@@ -31,7 +31,7 @@ function posts(state = initialState, action) {
     case SET_POSTS_ERROR:
       return {
         ...state,
-        error: action.payload,
+        error: true,
         totalPages: 0,
         loading: false
       };

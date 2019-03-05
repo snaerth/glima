@@ -2,6 +2,8 @@ const months = "janúar_febrúar_mars_apríl_maí_júní_júlí_ágúst_septembe
   "_"
 );
 
+const INVALID_DATE = "Invalid date";
+
 /**
  * Formats date to DD. monthname YYYY - HH:MM
  * @param {Object|String} date - Date string or object
@@ -9,28 +11,38 @@ const months = "janúar_febrúar_mars_apríl_maí_júní_júlí_ágúst_septembe
  * @returns {String} DD. monthname YYYY - HH:MM
  */
 function formatDate(date, showClock = true) {
-  // This is for mobile issues, all browser support ISO8601 format
-  if (date.includes(" ")) {
-    date = date.replace(" ", "T");
-    date = date + "Z";
+  if (!date) {
+    return INVALID_DATE;
   }
 
-  const dateObj = new Date(date);
-  let hours = dateObj.getHours();
-  let minutes = dateObj.getMinutes();
-  hours = hours.toString().length === 1 ? `0${hours}` : hours;
-  minutes = minutes.toString().length === 1 ? `0${minutes}` : minutes;
+  try {
+    // This is for mobile issues, all browser support ISO8601 format
+    if (date.includes(" ")) {
+      date = date.replace(" ", "T");
+      date = date + "Z";
+    }
 
-  const formattedDate = `${dateObj.getDate()}. ${
-    months[dateObj.getMonth()]
-  } ${dateObj.getFullYear()}`;
-  const time = `${hours}:${minutes}`;
+    const dateObj = new Date(date);
+    let hours = dateObj.getHours();
+    let minutes = dateObj.getMinutes();
+    hours = hours.toString().length === 1 ? `0${hours}` : hours;
+    minutes = minutes.toString().length === 1 ? `0${minutes}` : minutes;
 
-  if (showClock) {
-    return `${formattedDate} - ${time}`;
+    const formattedDate = `${dateObj.getDate()}. ${
+      months[dateObj.getMonth()]
+    } ${dateObj.getFullYear()}`;
+    const time = `${hours}:${minutes}`;
+
+    if (showClock) {
+      return `${formattedDate} - ${time}`;
+    }
+
+    return formattedDate;
+  } catch (error) {
+    console.error(error);
+
+    return INVALID_DATE;
   }
-
-  return formattedDate;
 }
 
 export default formatDate;

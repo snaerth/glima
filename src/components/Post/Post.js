@@ -54,7 +54,7 @@ class Post extends PureComponent {
     await actions.setActivePost(data);
 
     // Navigates user to /frett/:id route
-    history.push(`/frett/${data.id}`);
+    history.push(`/frett/${data.slug}/${data.id}`);
   };
 
   render() {
