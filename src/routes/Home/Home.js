@@ -67,9 +67,14 @@ class Home extends PureComponent {
       <Fragment>
         {!newsOnly ? <Banner /> : <BannerSmall text="Fréttir" />}
         <Container
-          className={classNames(s.container, {
-            [s.containerSmaller]: newsOnly
-          })}
+          className={classNames(
+            s.container,
+            s.containerFlex,
+            s.greyBackground,
+            {
+              [s.containerSmaller]: newsOnly
+            }
+          )}
         >
           <div className={newsOnly ? s.postOnlyContainer : s.postsContainer}>
             <Posts showPagination={newsOnly} moreButton={!newsOnly} />

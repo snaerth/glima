@@ -1,5 +1,17 @@
 @import "./styles/variables.scss";
 
+.container {
+  background-color: $color-white;
+}
+
+.supportersContainer {
+  max-width: $page-width-ipad-landscape;
+}
+
+.supporters {
+  background-color: $color-grey;
+}
+
 .emailButton {
   position: fixed;
   bottom: 15px;

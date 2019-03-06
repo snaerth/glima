@@ -1,9 +1,12 @@
 @import "../../styles/variables.scss";
 
-.container {
+.containerFlex {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.container {
   max-width: $page-width-ipad-landscape;
 }
 

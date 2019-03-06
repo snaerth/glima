@@ -1,0 +1,79 @@
+@import "../../styles/variables.scss";
+
+.title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-left: 0;
+  width: 100%;
+  list-style: none;
+
+  li {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+}
+
+.lotto,
+.isi {
+  width: 120px;
+}
+
+.geysir,
+.umfi,
+.avis {
+  width: 150px;
+}
+
+@media only screen and (min-width: $page-width-mobile) {
+  .list {
+    li {
+      width: 33%;
+    }
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad) {
+  .title {
+    margin-bottom: 70px;
+  }
+
+  .list {
+    li {
+      width: 20%;
+      margin-bottom: 0;
+    }
+  }
+
+  .lotto,
+  .isi {
+    width: 90px;
+  }
+
+  .geysir,
+  .umfi,
+  .avis {
+    width: 120px;
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad-landscape) {
+  .lotto,
+  .isi {
+    width: 120px;
+  }
+
+  .geysir,
+  .umfi,
+  .avis {
+    width: 150px;
+  }
+}
