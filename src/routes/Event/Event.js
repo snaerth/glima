@@ -12,12 +12,20 @@ import formatDate from "../../utils/dateHelper";
 import { getEvent } from "../../actions/events";
 import Container from "../../components/Container";
 import NoData from "../../components/NoData";
+import { ReactComponent as FacbookIcon } from "../../assets/img/facebook.svg";
 import s from "./Event.module.scss";
 
 const styles = {
   title: {
     marginTop: 16,
     fontWeight: 700
+  },
+  noLink: {
+    textDecoration: "none",
+    color: "inherit",
+    "&:hover": {
+      textDecoration: "none"
+    }
   }
 };
 
@@ -125,10 +133,22 @@ class Event extends PureComponent {
           <Typography component="article">
             <span dangerouslySetInnerHTML={{ __html: description }} />
           </Typography>
-          <div>
+          <div className={s.buttonsContainer}>
             <Button color="primary" onClick={this.backButtonHandler}>
               Til baka
             </Button>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=https://www.glima.is/vidburdir/${
+                event.id
+              }`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.noLink}
+            >
+              <Button size="small" color="primary">
+                <FacbookIcon className={s.facebookIcon} /> Deila á Facebook
+              </Button>
+            </a>
           </div>
         </div>
       </Container>

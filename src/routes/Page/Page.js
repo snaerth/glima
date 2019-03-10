@@ -56,8 +56,8 @@ class Page extends PureComponent {
     }
 
     const { content, title, _embedded } = page;
-    const featuredmedia = _embedded["wp:featuredmedia"];
     let img = null;
+    const featuredmedia = _embedded ? _embedded["wp:featuredmedia"] : null;
 
     if (featuredmedia) {
       img = featuredmedia[0].media_details.sizes.full.source_url;

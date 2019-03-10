@@ -13,6 +13,7 @@ import Container from "../../components/Container";
 import EventsList from "../../components/EventsList";
 import Banner from "../../components/Banner";
 import BannerSmall from "../../components/BannerSmall";
+import Supporters from "../../components/Supporters";
 import s from "./Home.module.scss";
 
 class Home extends PureComponent {
@@ -91,6 +92,11 @@ class Home extends PureComponent {
             </div>
           )}
         </Container>
+        <div className={s.supporters}>
+          <Container className={s.supportersContainer}>
+            <Supporters />
+          </Container>
+        </div>
       </Fragment>
     );
   }

@@ -15,15 +15,15 @@ import config from "../../config";
 
 const { VISIBLE_EVENTS } = config;
 
-const styles = theme => ({
+const styles = {
   root: {
     width: "100%",
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: "transparent"
   },
   divider: {
     marginTop: 15
   }
-});
+};
 
 class EventsList extends PureComponent {
   static defaultProps = {

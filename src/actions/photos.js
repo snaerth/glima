@@ -77,12 +77,12 @@ function getPhotos(slug, pageNumber) {
       }
 
       if (slug) {
-        dispatch({
+        return dispatch({
           type: SET_ACITVE_ALBUM,
           payload: Array.isArray(data) && data.length > 0 ? data[0] : data
         });
       } else {
-        dispatch({
+        return dispatch({
           type: SET_PHOTOS,
           payload: {
             data,
@@ -93,7 +93,7 @@ function getPhotos(slug, pageNumber) {
     } catch (error) {
       console.error(error);
 
-      dispatch({
+      return dispatch({
         type: SET_PHOTOS_ERROR,
         payload: true
       });

@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
 import List from "@material-ui/core/List";
@@ -18,14 +19,26 @@ import Container from "../../components/Container";
 import Loading from "../../components/Loading";
 import Tooltip from "../../components/Tooltip";
 import NoData from "../../components/NoData";
+import { ReactComponent as FacbookIcon } from "../../assets/img/facebook.svg";
 import s from "./Post.module.scss";
+
+const styles = {
+  noLink: {
+    textDecoration: "none",
+    color: "inherit",
+    "&:hover": {
+      textDecoration: "none"
+    }
+  }
+};
 
 class Post extends PureComponent {
   static propTypes = {
     post: allowNull(PropTypes.object.isRequired),
     error: allowNull(PropTypes.bool.isRequired),
     loading: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
   };
 
   componentDidMount() {
@@ -55,7 +68,7 @@ class Post extends PureComponent {
   }
 
   render() {
-    const { post, error, loading } = this.props;
+    const { post, error, loading, classes } = this.props;
 
     if (loading) {
       return <Loading text="Sæki frétt..." />;
@@ -66,8 +79,8 @@ class Post extends PureComponent {
     }
 
     const { content, title, date, _embedded } = post;
-    const featuredmedia = _embedded["wp:featuredmedia"];
     let img = null;
+    const featuredmedia = _embedded ? _embedded["wp:featuredmedia"] : null;
 
     if (featuredmedia) {
       img = featuredmedia[0].media_details.sizes.full.source_url;
@@ -122,10 +135,22 @@ class Post extends PureComponent {
           <Typography component="article">
             <span dangerouslySetInnerHTML={{ __html: content.rendered }} />
           </Typography>
-          <div>
+          <div className={s.buttonsContainer}>
             <Button color="primary" onClick={this.backButtonHandler}>
               Til baka
             </Button>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=https://www.glima.is/frett/${
+                post.slug
+              }/${post.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={classes.noLink}
+            >
+              <Button size="small" color="primary">
+                <FacbookIcon className={s.facebookIcon} /> Deila á Facebook
+              </Button>
+            </a>
           </div>
         </div>
       </Container>
@@ -165,4 +190,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Post);
+)(withStyles(styles)(Post));

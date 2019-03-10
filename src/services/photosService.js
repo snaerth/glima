@@ -1,4 +1,4 @@
-import axois from "axios";
+import axios from "axios";
 import config from "../config";
 
 const { API_URL, PHOTOS_PER_PAGE } = config;
@@ -20,7 +20,7 @@ export default async function fetchPhotos(slug, page) {
       url = `${url}?page=${page >= 1 ? page : 1}&per_page=${PHOTOS_PER_PAGE}`;
     }
 
-    const response = await axois.get(url);
+    const response = await axios.get(url);
 
     return {
       data: response.data,

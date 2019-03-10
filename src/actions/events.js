@@ -67,7 +67,7 @@ export function getEvent(id) {
     } catch (error) {
       console.error(error);
 
-      dispatch({
+      return dispatch({
         type: SET_EVENTS_ERROR,
         payload: true
       });

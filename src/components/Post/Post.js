@@ -27,6 +27,13 @@ const styles = {
     "&:hover": {
       textDecoration: "underline"
     }
+  },
+  noLink: {
+    textDecoration: "none",
+    color: "inherit",
+    "&:hover": {
+      textDecoration: "none"
+    }
   }
 };
 
@@ -40,7 +47,8 @@ class Post extends PureComponent {
     }).isRequired,
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    history: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
   };
 
   /**
@@ -58,12 +66,10 @@ class Post extends PureComponent {
   };
 
   render() {
-    const {
-      classes,
-      data: { date, title, excerpt, _embedded }
-    } = this.props;
-    const featuredmedia = _embedded["wp:featuredmedia"];
+    const { classes, data } = this.props;
+    const { date, title, excerpt, _embedded } = data;
     let img = null;
+    const featuredmedia = _embedded ? _embedded["wp:featuredmedia"] : null;
 
     if (featuredmedia) {
       img = featuredmedia[0].media_details.sizes.medium.source_url;
@@ -165,9 +171,6 @@ class Post extends PureComponent {
             </div>
           </MobileAndUp>
           <div>
-            <Button size="small" color="primary">
-              Deila
-            </Button>
             <Button
               size="small"
               color="primary"

@@ -92,7 +92,7 @@ function getPages(pageNumber = 1) {
     } catch (error) {
       console.error(error);
 
-      dispatch({
+      return dispatch({
         type: SET_PAGES_ERROR,
         payload: true
       });
@@ -111,7 +111,7 @@ export function getPage(id) {
       const payload = await fetchPage(id);
 
       if (payload instanceof Error) {
-        dispatch({
+        return dispatch({
           type: SET_PAGES_ERROR,
           payload
         });
@@ -121,7 +121,7 @@ export function getPage(id) {
     } catch (error) {
       console.error(error);
 
-      dispatch({
+      return dispatch({
         type: SET_PAGES_ERROR,
         payload: true
       });

@@ -18,8 +18,10 @@
       "type": "image/png"
     }
   ],
-  "start_url": ".",
+  "start_url": "/?utm_source=homescreen",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#2196f3",
+  "background_color": "#fafafa",
+  "orientation": "portrait",
+  "prefer_related_applications": false
 }

@@ -45,6 +45,17 @@
   padding-top: 56.25%;
 }
 
+.facebookIcon {
+  margin-right: 5px;
+  margin-top: -2px;
+}
+
+.buttonsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @media only screen and (min-width: $page-width-ipad) {
   .containerExtra {
     padding: 40px 20px;

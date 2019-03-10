@@ -64,8 +64,8 @@ class PostBig extends PureComponent {
       classes,
       data: { date, title, excerpt, _embedded }
     } = this.props;
-    const featuredmedia = _embedded["wp:featuredmedia"];
     let img = null;
+    const featuredmedia = _embedded ? _embedded["wp:featuredmedia"] : null;
 
     if (featuredmedia) {
       img = featuredmedia[0].media_details.sizes.full.source_url;
@@ -146,9 +146,6 @@ class PostBig extends PureComponent {
             </div>
           </MobileAndUp>
           <div>
-            <Button size="small" color="primary">
-              Deila
-            </Button>
             <Button
               size="small"
               color="primary"

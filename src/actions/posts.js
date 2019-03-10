@@ -81,7 +81,7 @@ function getPosts(pageNumber = 1) {
     } catch (error) {
       console.error(error);
 
-      dispatch({
+      return dispatch({
         type: SET_POSTS_ERROR,
         payload: true
       });
@@ -100,7 +100,7 @@ export function getPost(id) {
       const payload = await fetchPost(id);
 
       if (payload instanceof Error) {
-        dispatch({
+        return dispatch({
           type: SET_POSTS_ERROR,
           payload
         });
@@ -113,7 +113,7 @@ export function getPost(id) {
     } catch (error) {
       console.error(error);
 
-      dispatch({
+      return dispatch({
         type: SET_POSTS_ERROR,
         payload: true
       });

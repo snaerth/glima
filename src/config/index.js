@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   API_URL: "http://46.101.22.62",
   REQUEST_TIME_MIN: 200,
   //Pages

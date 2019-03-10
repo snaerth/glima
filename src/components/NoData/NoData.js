@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Link from "@material-ui/core/Link";
@@ -13,7 +13,7 @@ const NewsLink = props => <RouterLink to="/frettir/?page=1" {...props} />;
 const EventsLink = props => <RouterLink to="/vidburdir/?page=1" {...props} />;
 const PhotosLink = props => <RouterLink to="/myndir/?page=1" {...props} />;
 
-function NoData({ text, textCenter }) {
+function NoData({ text, textCenter, hideLinks }) {
   return (
     <Container
       className={classNames({
@@ -36,42 +36,47 @@ function NoData({ text, textCenter }) {
           {text}
         </Typography>
       </TabletAndUp>
-
-      <Typography>Hérna eru hjálplegir hlekkir í staðinn:</Typography>
-      <ul className={s.listContainer}>
-        <li>
-          <Link underline="hover" component={HomeLink}>
-            Heim
-          </Link>
-        </li>
-        <li>
-          <Link underline="hover" component={NewsLink}>
-            Fréttir
-          </Link>
-        </li>
-        <li>
-          <Link underline="hover" component={EventsLink}>
-            Viðburðir
-          </Link>
-        </li>
-        <li>
-          <Link underline="hover" component={PhotosLink}>
-            Myndir
-          </Link>
-        </li>
-      </ul>
+      {!hideLinks && (
+        <Fragment>
+          <Typography>Hérna eru hjálplegir hlekkir í staðinn:</Typography>
+          <ul className={s.listContainer}>
+            <li>
+              <Link underline="hover" component={HomeLink}>
+                Heim
+              </Link>
+            </li>
+            <li>
+              <Link underline="hover" component={NewsLink}>
+                Fréttir
+              </Link>
+            </li>
+            <li>
+              <Link underline="hover" component={EventsLink}>
+                Viðburðir
+              </Link>
+            </li>
+            <li>
+              <Link underline="hover" component={PhotosLink}>
+                Myndir
+              </Link>
+            </li>
+          </ul>
+        </Fragment>
+      )}
     </Container>
   );
 }
 
 NoData.defaultProps = {
   text: "Við fundum ekki það sem þú varst að leita að.",
-  textCenter: false
+  textCenter: false,
+  hideLinks: false
 };
 
 NoData.propTypes = {
   text: PropTypes.string.isRequired,
-  textCenter: PropTypes.bool
+  textCenter: PropTypes.bool,
+  hideLinks: PropTypes.bool
 };
 
 export default NoData;

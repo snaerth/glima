@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import posts from "./posts";
+import blog from "./posts";
 import photos from "./photos";
 import events from "./events";
 import categories from "./categories";
@@ -7,7 +7,7 @@ import pages from "./pages";
 import search from "./search";
 
 const rootReducer = combineReducers({
-  blog: posts,
+  blog,
   photos,
   events,
   categories,

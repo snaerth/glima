@@ -1,4 +1,4 @@
-import axois from "axios";
+import axios from "axios";
 import Pick from "object.pick";
 import config from "../config";
 
@@ -19,7 +19,7 @@ const desiredPageProps = [
  */
 export async function fetchPage(id) {
   try {
-    const { data } = await axois.get(
+    const { data } = await axios.get(
       `${API_URL}/wp-json/wp/v2/pages/${id}?_embed`
     );
 
@@ -51,7 +51,7 @@ export default async function fetchPages(page) {
       }
     }
 
-    const response = await axois.get(
+    const response = await axios.get(
       `${API_URL}/wp-json/wp/v2/pages?_embed&page=${
         page >= 1 ? page : 1
       }&per_page=${PAGES_PER_PAGE}`

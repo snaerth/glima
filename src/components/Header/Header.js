@@ -11,6 +11,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import BackIcon from "@material-ui/icons/ArrowBack";
 import InputBase from "@material-ui/core/InputBase";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import SearchIcon from "@material-ui/icons/Search";
@@ -23,7 +24,13 @@ import PhotoIcon from "@material-ui/icons/PhotoLibrary";
 import EventIcon from "@material-ui/icons/Event";
 import search, { setSearchValue, setSearchLoading } from "../../actions/search";
 import { appDefault } from "../../utils/createMuiTheme";
-import { TabletAndUp, Desktop, MinToDesktop } from "../Responsive";
+import {
+  TabletAndUp,
+  Desktop,
+  Mobile,
+  MobileOnly,
+  MobileToDesktop
+} from "../Responsive";
 import SearchResults from "../SearchResults";
 import Container from "../Container";
 
@@ -45,12 +52,17 @@ const styles = theme => ({
   grow: {
     flexGrow: 1
   },
-  menuButton: {
+  backButton: {
     marginLeft: -12,
-    marginRight: 20
+    marginRight: 8,
+    display: "none",
+    "@media screen and (min-device-width: 320px) and (max-device-width: 667px) and (orientation: portrait)": {
+      display: "inline-block"
+    }
   },
   rightWing: {
     display: "flex",
+    alignItems: "center",
     marginLeft: "auto"
   },
   noLink: {
@@ -109,6 +121,7 @@ const styles = theme => ({
 
 class Header extends PureComponent {
   static propTypes = {
+    history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     menuClick: PropTypes.func.isRequired,
@@ -117,7 +130,52 @@ class Header extends PureComponent {
 
   state = {
     anchorEl: null,
-    open: false
+    open: false,
+    offlinePath: "/offline"
+  };
+
+  componentDidMount() {
+    const {
+      history,
+      location: { pathname }
+    } = this.props;
+    const { offlinePath } = this.state;
+
+    window.addEventListener("online", this.setOfflineStatue);
+    window.addEventListener("offline", this.setOfflineStatue);
+
+    // if offline and pathname is not /offline route then route to offline route
+    if (!navigator.onLine && pathname !== offlinePath) {
+      history.push(offlinePath);
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("online", this.setOfflineStatue);
+    window.removeEventListener("offline", this.setOfflineStatue);
+  }
+
+  setOfflineStatue = () => {
+    const {
+      history,
+      location: { pathname }
+    } = this.props;
+    const { offlinePath } = this.state;
+
+    // if offline and pathname is not /offline route then route to offline route
+    if (!navigator.onLine && pathname !== offlinePath) {
+      history.push(offlinePath);
+    }
+
+    // if online and pathname is /offline route to home route
+    if (navigator.onLine && pathname === offlinePath) {
+      history.push("/");
+    }
+  };
+
+  backButtonHandler = () => {
+    const { history } = this.props;
+    history.goBack();
   };
 
   onBlur = () => {
@@ -156,31 +214,35 @@ class Header extends PureComponent {
     const { anchorEl, open } = this.state;
     const id = open ? "search-popper" : null;
     const hidePopper = !location.pathname.startsWith("/leit/");
+    const showBackButton = location.pathname !== "/";
 
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Container className={classes.container}>
             <Toolbar>
-              <IconButton
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="Menu"
-                onClick={() => menuClick(true)}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Desktop>
-                <Link to="/" className={classes.noLink}>
-                  <Typography
-                    variant="h6"
-                    color="inherit"
-                    className={classNames(classes.grow, classes.title)}
-                  >
-                    Glímusamband Íslands
-                  </Typography>
-                </Link>
-              </Desktop>
+              <Link to="/" className={classes.noLink}>
+                <Typography
+                  variant="h6"
+                  color="inherit"
+                  className={classNames(classes.grow, classes.title)}
+                >
+                  {showBackButton && (
+                    <MobileOnly>
+                      <IconButton
+                        className={classes.backButton}
+                        color="inherit"
+                        aria-label="button"
+                        onClick={this.backButtonHandler}
+                      >
+                        <BackIcon />
+                      </IconButton>
+                    </MobileOnly>
+                  )}
+                  <Mobile>Glíma</Mobile>
+                  <TabletAndUp>Glímusamband Íslands</TabletAndUp>
+                </Typography>
+              </Link>
 
               <TabletAndUp>
                 <div className={classes.grow} />
@@ -213,11 +275,11 @@ class Header extends PureComponent {
               </TabletAndUp>
               <div className={classes.rightWing}>
                 <Link to="/frettir/?page=1" className={classes.noLink}>
-                  <MinToDesktop>
+                  <MobileToDesktop>
                     <IconButton color="inherit" aria-label="News">
                       <NewsIcon />
                     </IconButton>
-                  </MinToDesktop>
+                  </MobileToDesktop>
                   <Desktop>
                     <Button className={classes.button} color="inherit">
                       Fréttir
@@ -225,11 +287,11 @@ class Header extends PureComponent {
                   </Desktop>
                 </Link>
                 <Link to="/vidburdir/?page=1" className={classes.noLink}>
-                  <MinToDesktop>
+                  <MobileToDesktop>
                     <IconButton color="inherit" aria-label="Events">
                       <EventIcon />
                     </IconButton>
-                  </MinToDesktop>
+                  </MobileToDesktop>
                   <Desktop>
                     <Button className={classes.button} color="inherit">
                       Viðburðir
@@ -237,17 +299,26 @@ class Header extends PureComponent {
                   </Desktop>
                 </Link>
                 <Link to="/myndir/?page=1" className={classes.noLink}>
-                  <MinToDesktop>
+                  <MobileToDesktop>
                     <IconButton color="inherit" aria-label="Photos">
                       <PhotoIcon />
                     </IconButton>
-                  </MinToDesktop>
+                  </MobileToDesktop>
                   <Desktop>
                     <Button className={classes.button} color="inherit">
                       Myndir
                     </Button>
                   </Desktop>
                 </Link>
+                <div>
+                  <IconButton
+                    color="inherit"
+                    aria-label="Menu"
+                    onClick={() => menuClick(true)}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </div>
               </div>
             </Toolbar>
           </Container>

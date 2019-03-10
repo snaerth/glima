@@ -1,4 +1,4 @@
-import axois from "axios";
+import axios from "axios";
 import config from "../config";
 
 const { API_URL } = config;
@@ -17,7 +17,7 @@ async function fetchCategories(slug) {
       url = `${url}?slug=${slug}`;
     }
 
-    const response = await axois.get(url);
+    const response = await axios.get(url);
 
     return {
       data: response.data

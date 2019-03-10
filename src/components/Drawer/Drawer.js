@@ -8,6 +8,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
+import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
@@ -20,6 +21,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import Divider from "@material-ui/core/Divider";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
+import ExitIcon from "@material-ui/icons/Clear";
 import getPages, { setPagesLoading, setActivePage } from "../../actions/pages";
 import search, { setSearchValue, setSearchLoading } from "../../actions/search";
 import { ENTER } from "../../utils/keyCodes";
@@ -27,8 +29,8 @@ import { ENTER } from "../../utils/keyCodes";
 const styles = theme => ({
   root: {
     width: "100%",
-    maxWidth: 360,
-    minWidth: 320,
+    maxWidth: 300,
+    minWidth: 300,
     backgroundColor: theme.palette.background.paper
   },
   nested: {
@@ -65,11 +67,13 @@ const styles = theme => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
-      width: 120,
-      "&:focus": {
-        width: 200
-      }
+      width: 120
     }
+  },
+  searchWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 });
 
@@ -186,20 +190,29 @@ class DrawerComp extends Component {
 
     return (
       <Drawer open={open} onClose={this.toggleDrawer(false)}>
-        <div aria-describedby="search" className={classes.search}>
-          <div className={classes.searchIcon}>
-            <SearchIcon />
+        <div className={classes.searchWrapper}>
+          <div aria-describedby="search" className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Leita…"
+              value={searchValue}
+              onKeyPress={this.onSearchKeyPress}
+              onChange={this.onSearchChange}
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput
+              }}
+            />
           </div>
-          <InputBase
-            placeholder="Leita…"
-            value={searchValue}
-            onKeyPress={this.onSearchKeyPress}
-            onChange={this.onSearchChange}
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput
-            }}
-          />
+          <IconButton
+            color="inherit"
+            aria-label="button"
+            onClick={this.toggleDrawer(false)}
+          >
+            <ExitIcon />
+          </IconButton>
         </div>
         <Divider />
         <List component="nav" className={classes.root}>

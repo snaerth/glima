@@ -1,4 +1,4 @@
-import axois from "axios";
+import axios from "axios";
 import config from "../config";
 
 const { API_URL, POSTS_PER_PAGE } = config;
@@ -10,7 +10,7 @@ const { API_URL, POSTS_PER_PAGE } = config;
  */
 export async function fetchPost(id) {
   try {
-    const { data } = await axois.get(
+    const { data } = await axios.get(
       `${API_URL}/wp-json/wp/v2/posts/${id}?_embed`
     );
 
@@ -37,7 +37,7 @@ export default async function fetchPosts(page, categories = []) {
       url = `${url}&categories=${categories.join(",")}`;
     }
 
-    const response = await axois.get(url);
+    const response = await axios.get(url);
 
     return {
       data: response.data,

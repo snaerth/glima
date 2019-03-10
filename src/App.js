@@ -16,8 +16,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Drawer from "./components/Drawer";
 import ErrorBoundary from "./components/ErrorBoundary";
-import Supporters from "./components/Supporters";
-import Container from "./components/Container";
 import config from "./config";
 import s from "./App.module.scss";
 
@@ -60,15 +58,21 @@ class App extends PureComponent {
                   <Route exact path="/vidburdir/:id" component={EventRoute} />
                   <Route exact path="/page/:slug/:id" component={PageRoute} />
                   <Route exact path="/leit/:search" component={SearchRoute} />
+                  <Route
+                    exact
+                    path="/offline"
+                    render={props => (
+                      <NoData
+                        {...props}
+                        hideLinks
+                        text="Þú ert ekki í netsambandi. Athugaðu netsambandið þitt og prófaðu að endurhlaða síðunni"
+                      />
+                    )}
+                  />
                   <Route component={NoData} />
                 </Switch>
               </div>
             </ErrorBoundary>
-            <div className={s.supporters}>
-              <Container className={s.supportersContainer}>
-                <Supporters />
-              </Container>
-            </div>
             <Footer />
           </ScrollToTop>
         </Router>
