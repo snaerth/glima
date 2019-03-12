@@ -53,7 +53,6 @@ const styles = theme => ({
     flexGrow: 1
   },
   backButton: {
-    marginLeft: -12,
     marginRight: 8,
     display: "none",
     "@media screen and (min-device-width: 320px) and (max-device-width: 667px) and (orientation: portrait)": {
@@ -69,6 +68,9 @@ const styles = theme => ({
     textDecoration: "none",
     color: "inherit",
     margin: theme.spacing.unit
+  },
+  noMargin: {
+    margin: 0
   },
   paper: {
     padding: theme.spacing.unit * 2,
@@ -221,29 +223,31 @@ class Header extends PureComponent {
         <AppBar position="static">
           <Container className={classes.container}>
             <Toolbar>
-              <Link to="/" className={classes.noLink}>
+              {showBackButton && (
+                <MobileOnly>
+                  <IconButton
+                    className={classes.backButton}
+                    color="inherit"
+                    aria-label="button"
+                    onClick={this.backButtonHandler}
+                  >
+                    <BackIcon />
+                  </IconButton>
+                </MobileOnly>
+              )}
+              <Link
+                to="/"
+                className={classNames(classes.noLink, classes.noMargin)}
+              >
                 <Typography
                   variant="h6"
                   color="inherit"
                   className={classNames(classes.grow, classes.title)}
                 >
-                  {showBackButton && (
-                    <MobileOnly>
-                      <IconButton
-                        className={classes.backButton}
-                        color="inherit"
-                        aria-label="button"
-                        onClick={this.backButtonHandler}
-                      >
-                        <BackIcon />
-                      </IconButton>
-                    </MobileOnly>
-                  )}
                   <Mobile>Glíma</Mobile>
                   <TabletAndUp>Glímusamband Íslands</TabletAndUp>
                 </Typography>
               </Link>
-
               <TabletAndUp>
                 <div className={classes.grow} />
                 <div aria-describedby={id} className={classes.search}>

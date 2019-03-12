@@ -92,11 +92,13 @@ class Home extends PureComponent {
             </div>
           )}
         </Container>
-        <div className={s.supporters}>
-          <Container className={s.supportersContainer}>
-            <Supporters />
-          </Container>
-        </div>
+        {!newsOnly && (
+          <div className={s.supporters}>
+            <Container className={s.supportersContainer}>
+              <Supporters />
+            </Container>
+          </div>
+        )}
       </Fragment>
     );
   }
