@@ -11,7 +11,7 @@ const { API_URL } = config;
  */
 async function fetchCategories(slug) {
   try {
-    let url = `${API_URL}/wp-json/wp/v2/categories`;
+    let url = `${API_URL}/wp/v2/categories`;
 
     if (slug) {
       url = `${url}?slug=${slug}`;

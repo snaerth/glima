@@ -10,7 +10,7 @@ const { API_URL, EVENTS_PER_PAGE } = config;
  */
 async function fetchEvents(page, id) {
   try {
-    let url = `${API_URL}/wp-json/tribe/events/v1/events`;
+    let url = `${API_URL}/tribe/events/v1/events`;
 
     if (page) {
       url = `${url}?page=${page >= 1 ? page : 1}&per_page=${EVENTS_PER_PAGE}`;

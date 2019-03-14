@@ -29,7 +29,7 @@ import { ENTER } from "../../utils/keyCodes";
 const styles = theme => ({
   root: {
     width: "100%",
-    maxWidth: 300,
+    maxWidth: 360,
     minWidth: 300,
     backgroundColor: theme.palette.background.paper
   },

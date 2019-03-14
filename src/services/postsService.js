@@ -11,7 +11,7 @@ const { API_URL, POSTS_PER_PAGE } = config;
 export async function fetchPost(id) {
   try {
     const { data } = await axios.get(
-      `${API_URL}/wp-json/wp/v2/posts/${id}?_embed`
+      `${API_URL}/wp/v2/posts/${id}?_embed`
     );
 
     return data;
@@ -29,7 +29,7 @@ export async function fetchPost(id) {
  */
 export default async function fetchPosts(page, categories = []) {
   try {
-    let url = `${API_URL}/wp-json/wp/v2/posts?_embed&page=${
+    let url = `${API_URL}/wp/v2/posts?_embed&page=${
       page >= 1 ? page : 1
     }&per_page=${POSTS_PER_PAGE}`;
 

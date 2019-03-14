@@ -12,7 +12,7 @@ const { API_URL, PHOTOS_PER_PAGE } = config;
  */
 export default async function fetchPhotos(slug, page) {
   try {
-    let url = `${API_URL}/wp-json/wp/v2/envira-gallery`;
+    let url = `${API_URL}/wp/v2/envira-gallery`;
 
     if (slug && !page) {
       url = `${url}?slug=${slug}`;

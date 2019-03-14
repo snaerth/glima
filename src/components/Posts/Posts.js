@@ -116,12 +116,7 @@ class Posts extends PureComponent {
   };
 
   renderNoPosts() {
-    return (
-      <NoData
-        textCenter={false}
-        text="Við fundum engar fréttir á þessum hlekk."
-      />
-    );
+    return <NoData textCenter={false} text="Engar fréttir fundust." />;
   }
 
   render() {

@@ -20,7 +20,7 @@ const desiredPageProps = [
 export async function fetchPage(id) {
   try {
     const { data } = await axios.get(
-      `${API_URL}/wp-json/wp/v2/pages/${id}?_embed`
+      `${API_URL}/wp/v2/pages/${id}?_embed`
     );
 
     if (data instanceof Error) {
@@ -52,7 +52,7 @@ export default async function fetchPages(page) {
     }
 
     const response = await axios.get(
-      `${API_URL}/wp-json/wp/v2/pages?_embed&page=${
+      `${API_URL}/wp/v2/pages?_embed&page=${
         page >= 1 ? page : 1
       }&per_page=${PAGES_PER_PAGE}`
     );

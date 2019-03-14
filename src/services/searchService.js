@@ -17,9 +17,9 @@ const { API_URL } = config;
 export default async function searchAll(value) {
   try {
     const promises = [
-      axios.get(`${API_URL}/wp-json/wp/v2/posts?_embed&search=${value}`),
-      axios.get(`${API_URL}/wp-json/wp/v2/pages?_embed&search=${value}`),
-      axios.get(`${API_URL}/wp-json/tribe/events/v1/events?search=${value}`)
+      axios.get(`${API_URL}/wp/v2/posts?_embed&search=${value}`),
+      axios.get(`${API_URL}/wp/v2/pages?_embed&search=${value}`),
+      axios.get(`${API_URL}/tribe/events/v1/events?search=${value}`)
     ];
 
     const [postsResponse, pagesResponse, eventsResponse] = await Promise.all(

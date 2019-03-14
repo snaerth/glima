@@ -41,7 +41,7 @@ server.get("/frett/:slug/:id", async (req, res) => {
 
   try {
     const { data } = await axois.get(
-      `${API_URL}/wp-json/wp/v2/posts/${id}?_embed`
+      `${API_URL}/wp/v2/posts/${id}?_embed`
     );
 
     if (data instanceof Error) {
@@ -70,7 +70,7 @@ server.get("/vidburdir/:id", async (req, res) => {
 
   try {
     const { data } = await axois.get(
-      `${API_URL}/wp-json/tribe/events/v1/events?id=${id}`
+      `${API_URL}/tribe/events/v1/events?id=${id}`
     );
 
     if (data instanceof Error) {

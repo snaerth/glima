@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -10,6 +10,7 @@ import { getPage, setPagesLoading } from "../../actions/pages";
 import Container from "../../components/Container";
 import Loading from "../../components/Loading";
 import NoData from "../../components/NoData";
+import BannerSmall from "../../components/BannerSmall";
 import s from "./Page.module.scss";
 
 class Page extends PureComponent {
@@ -64,27 +65,29 @@ class Page extends PureComponent {
     }
 
     return (
-      <Container className={s.containerExtra}>
-        {img && (
-          <CardMedia
-            alt={featuredmedia[0].alt_text || title.rendered}
-            className={s.media}
-            image={img}
-            title={featuredmedia[0].alt_text || title.rendered}
-          />
-        )}
-        <h2 className={s.title}>{title.rendered}</h2>
-        <div>
-          <Typography component="article">
-            <span dangerouslySetInnerHTML={{ __html: content.rendered }} />
-          </Typography>
+      <Fragment>
+        <BannerSmall text={title.rendered} />
+        <Container className={s.containerExtra}>
+          {img && (
+            <CardMedia
+              alt={featuredmedia[0].alt_text || title.rendered}
+              className={s.media}
+              image={img}
+              title={featuredmedia[0].alt_text || title.rendered}
+            />
+          )}
           <div>
-            <Button color="primary" onClick={this.backButtonHandler}>
-              Til baka
-            </Button>
+            <Typography component="article">
+              <span dangerouslySetInnerHTML={{ __html: content.rendered }} />
+            </Typography>
+            <div>
+              <Button color="primary" onClick={this.backButtonHandler}>
+                Til baka
+              </Button>
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </Fragment>
     );
   }
 }

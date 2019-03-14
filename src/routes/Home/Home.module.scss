@@ -3,6 +3,7 @@
 .containerFlex {
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
 }
 
 .container {
@@ -33,7 +34,8 @@
 }
 
 @media only screen and (min-width: $page-width-desktop) {
-  .container {
+  .container,
+  .containerFlex {
     flex-direction: row;
   }
 
