@@ -121,13 +121,8 @@ class Events extends PureComponent {
       return <Loading text="Sæki frétt..." />;
     }
 
-    if (error || !events) {
-      return (
-        <NoData
-          textCenter={false}
-          text="Við fundum enga viðburði á þessum hlekk."
-        />
-      );
+    if (error || !events || events.length === 0) {
+      return <NoData textCenter={false} text="Við fundum enga viðburði." />;
     }
 
     const isLastPostIdx = events.length - 1;

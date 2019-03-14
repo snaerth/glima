@@ -136,7 +136,7 @@ class Posts extends PureComponent {
       return <Loading text="Sæki fréttir..." />;
     }
 
-    if (error) {
+    if (error || posts.length === 0) {
       return this.renderNoPosts();
     }
 

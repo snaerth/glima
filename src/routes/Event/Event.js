@@ -77,12 +77,7 @@ class Event extends PureComponent {
     const { event, error, classes } = this.props;
 
     if (error || !event) {
-      return (
-        <NoData
-          textCenter={false}
-          text="Við fundum engan viðburð á þessum hlekk."
-        />
-      );
+      return <NoData textCenter={false} text="Við fundum engan viðburð." />;
     }
 
     const {
