@@ -1,0 +1,8 @@
+{
+  "name": "Glíma",
+  "script": "server/index.js",
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": 9001
+  }
+}
