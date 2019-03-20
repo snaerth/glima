@@ -7,7 +7,6 @@ import getEvents, {
   setEventsLoading,
   setActiveEvent
 } from "../../actions/events";
-import getCategories, { setCategoriesLoading } from "../../actions/categories";
 import Posts from "../../components/Posts";
 import Container from "../../components/Container";
 import EventsList from "../../components/EventsList";
@@ -36,14 +35,7 @@ class Home extends PureComponent {
   async componentDidMount() {
     const { actions } = this.props;
     actions.setEventsLoading();
-    actions.setCategoriesLoading();
-    const eventCategory = await actions.getCategories("event");
-
-    if (eventCategory[0]) {
-      actions.getEvents(1);
-    } else {
-      actions.setEventsLoading(false);
-    }
+    actions.getEvents(1);
   }
 
   /**
@@ -134,9 +126,7 @@ function mapDispatchToProps(dispatch) {
       {
         getEvents,
         setEventsLoading,
-        setActiveEvent,
-        getCategories,
-        setCategoriesLoading
+        setActiveEvent
       },
       dispatch
     )

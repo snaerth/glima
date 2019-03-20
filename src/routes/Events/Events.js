@@ -10,7 +10,6 @@ import getEvents, {
   setActiveEvent,
   setEventPage
 } from "../../actions/events";
-import getCategories, { setCategoriesLoading } from "../../actions/categories";
 import EventItem from "../../components/EventItem";
 import Container from "../../components/Container";
 import Pagination from "../../components/Pagination";
@@ -43,26 +42,21 @@ class Events extends PureComponent {
   async componentDidMount() {
     const { actions, events, page, location, history } = this.props;
 
-    actions.setCategoriesLoading();
-    const eventCategory = await actions.getCategories("event");
+    const qsPageParam = queryString.parse(location.search);
+    const pageNumber = Number(qsPageParam.page);
 
-    if (eventCategory[0] && eventCategory[0].id) {
-      const qsPageParam = queryString.parse(location.search);
-      const pageNumber = Number(qsPageParam.page);
+    if (!events || events.length === 0 || pageNumber) {
+      actions.setEventsLoading();
 
-      if (!events || events.length === 0 || pageNumber) {
-        actions.setEventsLoading();
+      if (pageNumber) {
+        actions.setEventPage(pageNumber);
+        actions.getEvents(pageNumber);
+      } else {
+        actions.setEventPage(page);
+        actions.getEvents(page);
 
-        if (pageNumber) {
-          actions.setEventPage(pageNumber);
-          actions.getEvents(pageNumber);
-        } else {
-          actions.setEventPage(page);
-          actions.getEvents(page);
-
-          if (location.pathname.includes("/vidburdir")) {
-            history.push("/vidburdir/?page=1");
-          }
+        if (location.pathname.includes("/vidburdir")) {
+          history.push("/vidburdir/?page=1");
         }
       }
     }
@@ -181,9 +175,7 @@ function mapDispatchToProps(dispatch) {
         getEvents,
         setEventsLoading,
         setActiveEvent,
-        setEventPage,
-        getCategories,
-        setCategoriesLoading
+        setEventPage
       },
       dispatch
     )
