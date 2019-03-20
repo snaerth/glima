@@ -103,12 +103,7 @@ class PhotoAlbums extends PureComponent {
     }
 
     if (error || !photos || photos.length === 0) {
-      return (
-        <NoData
-          textCenter={false}
-          text="Við fundum engar myndir á þessum hlekk."
-        />
-      );
+      return <NoData textCenter={false} text="Við fundum engar myndir." />;
     }
 
     return (

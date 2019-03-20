@@ -6,7 +6,8 @@ import {
   MobileOnly,
   MobileAndUp,
   MinToDesktop,
-  MobileToDesktop
+  MobileToDesktop,
+  TabletHorizontalAndUp
 } from "./Responsive";
 export {
   Desktop,
@@ -16,5 +17,6 @@ export {
   MobileOnly,
   MobileAndUp,
   MinToDesktop,
-  MobileToDesktop
+  MobileToDesktop,
+  TabletHorizontalAndUp
 };

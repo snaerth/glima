@@ -2,7 +2,7 @@
 
 .container {
   margin: 0 auto;
-  padding: 40px 15px;
+  padding: 40px $gutter;
   max-width: $page-width-desktop;
 }
 

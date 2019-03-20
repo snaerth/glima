@@ -1,13 +1,145 @@
+@import "../../styles/variables.scss";
+
 .container {
+  position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-  background-color: rgb(40, 44, 52);
+  height: 400px;
+  background-color: $color-white;
   margin-bottom: 20px;
+  overflow: hidden;
 }
 
-.logo {
-  width: 200px;
-  height: 200px;
+.containerInner {
+  display: flex;
+  padding: 0;
+  width: 100%;
+  max-width: $page-width-max;
+}
+
+.contentContainer {
+  position: relative;
+  flex: 1;
+  width: 100%;
+}
+
+.imageContainer {
+  display: none;
+  width: 100%;
+}
+
+.image {
+  background-repeat: no-repeat;
+  background-position: 100%;
+  background-size: cover;
+  background-position-x: 0;
+  height: 100%;
+}
+
+.title {
+  padding-left: $gutter;
+  font-family: $title-font;
+  font-size: 3em;
+  letter-spacing: 3px;
+}
+
+.diamond {
+  height: 100%;
+  width: 100%;
+  background-color: $primary-color;
+  transform: rotate(-45deg);
+}
+
+.diamondBig {
+  position: absolute;
+  bottom: -160px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+}
+
+.socialsContainer {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+
+  a:first-child {
+    margin-right: 10px;
+  }
+}
+
+.facebookIcon {
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+
+  path:nth-child(1) {
+    transition: $hover-transition;
+    fill: $primary-color;
+  }
+
+  path:nth-child(2) {
+    fill: $color-white;
+  }
+
+  &:hover {
+    path:nth-child(1) {
+      fill: $color-facebook;
+    }
+  }
+}
+
+.instagramIcon {
+  position: relative;
+  top: -2px;
+  height: 46px;
+  width: 46px;
+  cursor: pointer;
+
+  path,
+  circle {
+    transition: $hover-transition;
+    fill: $primary-color;
+  }
+
+  &:hover {
+    path {
+      fill: url(#a);
+    }
+    circle {
+      fill: url(#c);
+    }
+  }
+}
+
+@media only screen and (min-width: $page-width-mobile) {
+  .imageContainer {
+    display: block;
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad) {
+  .container {
+    height: 500px;
+  }
+
+  .contentContainer {
+    width: 30%;
+    min-width: 470px;
+  }
+
+  .title {
+    padding-left: 0;
+    position: absolute;
+    top: 80px;
+    left: 130px;
+    max-width: 470px;
+    font-size: 5em;
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad-landscape) {
+  .contentContainer {
+    min-width: 550px;
+    max-width: 550px;
+  }
 }

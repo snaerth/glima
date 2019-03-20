@@ -3,7 +3,7 @@ import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 
 export const appDefault = {
-  pageWidthMax: 1280
+  pageWidthMax: 1920
 };
 
 // Create a theme instance.

@@ -1,7 +1,7 @@
 @import "../../styles/variables.scss";
 
 .containerExtra {
-  padding: 0 15px 40px;
+  padding: 0 $gutter 40px;
 
   figure {
     margin-left: 0;

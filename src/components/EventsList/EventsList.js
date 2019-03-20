@@ -22,6 +22,9 @@ const styles = {
   },
   divider: {
     marginTop: 15
+  },
+  noEventsContainer: {
+    margin: "40px 0 20px"
   }
 };
 
@@ -63,10 +66,10 @@ class EventsList extends PureComponent {
 
     if (events.length === 0) {
       return (
-        <Fragment>
+        <div className={classes.noEventsContainer}>
           <Typography variant="h6">Engir viðburðir framundan</Typography>
           <Divider className={classes.divider} />
-        </Fragment>
+        </div>
       );
     }
 

@@ -27,11 +27,11 @@ import { appDefault } from "../../utils/createMuiTheme";
 import {
   TabletAndUp,
   Desktop,
-  Mobile,
   MobileOnly,
   MobileToDesktop
 } from "../Responsive";
 import SearchResults from "../SearchResults";
+import { ReactComponent as Logo } from "../../assets/img/glima_logo.svg";
 import Container from "../Container";
 
 const styles = theme => ({
@@ -41,6 +41,10 @@ const styles = theme => ({
     maxWidth: appDefault.pageWidthMax,
     padding: 0
   },
+  logoContainer: {
+    display: "flex",
+    alignItems: "center"
+  },
   title: {
     whiteSpace: "nowrap",
     textOverflow: "ellipsis",
@@ -48,6 +52,15 @@ const styles = theme => ({
   },
   root: {
     flexGrow: 1
+  },
+  logo: {
+    height: 40,
+    width: 40,
+    marginRight: 10,
+    [theme.breakpoints.up("sm")]: {
+      height: 50,
+      width: 50
+    }
   },
   grow: {
     flexGrow: 1
@@ -237,15 +250,19 @@ class Header extends PureComponent {
               )}
               <Link
                 to="/"
-                className={classNames(classes.noLink, classes.noMargin)}
+                className={classNames(
+                  classes.noLink,
+                  classes.noMargin,
+                  classes.logoContainer
+                )}
               >
+                <Logo className={classes.logo} />
                 <Typography
                   variant="h6"
                   color="inherit"
                   className={classNames(classes.grow, classes.title)}
                 >
-                  <Mobile>Glíma</Mobile>
-                  <TabletAndUp>Glímusamband Íslands</TabletAndUp>
+                  Glíma
                 </Typography>
               </Link>
               <TabletAndUp>

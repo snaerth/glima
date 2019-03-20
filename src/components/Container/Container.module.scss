@@ -2,12 +2,12 @@
 
 .container {
   margin: 0 auto;
-  padding: 20px 15px;
+  padding: 20px $gutter;
   max-width: 740px;
 }
 
 @media only screen and (min-width: $page-width-ipad) {
   .container {
-    padding: 40px 15px;
+    padding: 40px $gutter;
   }
 }

@@ -3,6 +3,8 @@ $secondary-color: #2196f3;
 $color-white: #ffffff;
 $color-grey: #fafafa;
 $color-dark-grey: #f1f3f4;
+$color-green: rgb(22, 231, 4);
+$color-facebook: #1565c0;
 
 /* Media queries sizes  */
 $page-width-min: 320px;
@@ -12,7 +14,12 @@ $page-width-ipad: 768px;
 $page-width-desktop: 992px;
 $page-width-ipad-landscape: 1024px;
 $page-width-laptop: 1280px;
-$page-width-max: 1420px;
+$page-width-max: 1920px;
 
 /* Gutter  */
-$gutter: 15px;
+$gutter: 16px;
+
+$title-font: "futurabold";
+
+// Hover transition
+$hover-transition: all 0.15s ease-in;
