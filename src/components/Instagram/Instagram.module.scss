@@ -1,0 +1,32 @@
+@import "../../styles/variables.scss";
+
+.title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.imagesContainers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: $gutter $gutter;
+}
+
+.image {
+  // ⚠️ object-fit is not supported by IE 11. But who cares about IE anyway
+  object-fit: cover;
+  width: 100%;
+  height: 0;
+  padding-top: 56.25%;
+}
+
+@media only screen and (min-width: $page-width-ipad) {
+  .imagesContainers {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media only screen and (min-width: $page-width-ipad-landscape) {
+  .imagesContainers {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}

@@ -26,6 +26,14 @@
   text-align: center;
 }
 
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 300px;
+}
+
 .media {
   margin: 0 -20px;
   width: calc(100% + 40px);

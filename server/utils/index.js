@@ -64,7 +64,12 @@ function replaceSocialMetaTags(html, data, type) {
     titleDesc = title.rendered;
     description = excerpt.rendered;
 
-    if (featuredmedia) {
+    if (
+      featuredmedia &&
+      featuredmedia[0] &&
+      featuredmedia[0].media_details &&
+      featuredmedia[0].media_details.sizes
+    ) {
       imageUrl = featuredmedia[0].media_details.sizes.medium.source_url;
     }
   }

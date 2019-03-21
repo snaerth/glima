@@ -13,6 +13,13 @@ module.exports = {
   VISIBLE_EVENTS: 5,
   // Photos
   PHOTOS_PER_PAGE: 9,
+  // Instagram
+  // How many Instagram photos to fetch
+  INSTAGRAM_PHOTOS_COUNT: 12,
+  INSTAGRAM_USER_ID: "10033819447",
+  INSTAGRAM_ACCESS_TOKEN:
+    "10033819447.872a6f8.ebe9bed93e5a4f1ba22a429c86926680",
+
   mail: {
     email: "gli@glima.is",
     subject: "Fyrirspurn frá vef",

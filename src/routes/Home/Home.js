@@ -7,11 +7,14 @@ import getEvents, {
   setEventsLoading,
   setActiveEvent
 } from "../../actions/events";
+import fetchInstagramPhotos from "../../actions/instagram";
 import Posts from "../../components/Posts";
 import Container from "../../components/Container";
 import EventsList from "../../components/EventsList";
 import Banner from "../../components/Banner";
 import BannerSmall from "../../components/BannerSmall";
+import Instagram from "../../components/Instagram";
+
 import Supporters from "../../components/Supporters";
 import s from "./Home.module.scss";
 
@@ -29,11 +32,15 @@ class Home extends PureComponent {
     match: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     newsOnly: PropTypes.bool,
-    error: PropTypes.bool
+    error: PropTypes.bool,
+    instagramData: PropTypes.array.isRequired,
+    instagramError: PropTypes.bool,
+    instagramLoading: PropTypes.bool
   };
 
   async componentDidMount() {
     const { actions } = this.props;
+    actions.fetchInstagramPhotos();
     actions.setEventsLoading();
     actions.getEvents(1);
   }
@@ -54,7 +61,15 @@ class Home extends PureComponent {
   };
 
   render() {
-    const { newsOnly, events, history, loading } = this.props;
+    const {
+      newsOnly,
+      events,
+      history,
+      loading,
+      instagramData,
+      instagramError,
+      instagramLoading
+    } = this.props;
 
     return (
       <Fragment>
@@ -91,6 +106,17 @@ class Home extends PureComponent {
             </Container>
           </div>
         )}
+        {instagramData && (
+          <div className={s.instagram}>
+            <Container className={s.supportersContainer}>
+              <Instagram
+                data={instagramData}
+                loading={instagramLoading}
+                error={instagramError}
+              />
+            </Container>
+          </div>
+        )}
       </Fragment>
     );
   }
@@ -104,13 +130,17 @@ class Home extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    events: { data, error, loading }
+    events: { data, error, loading },
+    instagram
   } = state;
 
   return {
     events: data,
     error,
-    loading
+    loading,
+    instagramData: instagram.data,
+    instagramError: instagram.error,
+    instagramLoading: instagram.loading
   };
 }
 
@@ -126,7 +156,8 @@ function mapDispatchToProps(dispatch) {
       {
         getEvents,
         setEventsLoading,
-        setActiveEvent
+        setActiveEvent,
+        fetchInstagramPhotos
       },
       dispatch
     )

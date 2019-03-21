@@ -71,7 +71,12 @@ class Post extends PureComponent {
     let img = null;
     const featuredmedia = _embedded ? _embedded["wp:featuredmedia"] : null;
 
-    if (featuredmedia) {
+    if (
+      featuredmedia &&
+      featuredmedia[0] &&
+      featuredmedia[0].media_details &&
+      featuredmedia[0].media_details.sizes
+    ) {
       img = featuredmedia[0].media_details.sizes.medium.source_url;
     }
 

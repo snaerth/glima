@@ -48,7 +48,7 @@ class Banner extends PureComponent {
                 <FacbookIcon className={s.facebookIcon} />
               </a>
               <a
-                href="https://www.facebook.com/glimaIsl/"
+                href="https://www.instagram.com/glimaisl/"
                 target="_blank"
                 rel="noopener noreferrer"
               >

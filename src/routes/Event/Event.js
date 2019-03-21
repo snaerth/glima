@@ -1,7 +1,8 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, Fragment } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -9,9 +10,10 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import allowNull from "../../utils/propTypesHelpers";
 import formatDate from "../../utils/dateHelper";
-import { getEvent } from "../../actions/events";
+import { getEvent, setEventsLoading } from "../../actions/events";
 import Container from "../../components/Container";
 import NoData from "../../components/NoData";
+import BannerSmall from "../../components/BannerSmall";
 import { ReactComponent as FacbookIcon } from "../../assets/img/facebook.svg";
 import s from "./Event.module.scss";
 
@@ -47,6 +49,7 @@ class Event extends PureComponent {
     } = this.props;
 
     if (!event && id) {
+      actions.setEventsLoading();
       actions.getEvent(id);
     }
   }
@@ -58,10 +61,13 @@ class Event extends PureComponent {
 
   renderLoading() {
     return (
-      <Container className={s.textCenter}>
-        <CircularProgress />
-        <p>Sæki viðburð...</p>
-      </Container>
+      <Fragment>
+        <BannerSmall text="Viðburður" />
+        <Container className={classNames(s.textCenter, s.loadingContainer)}>
+          <CircularProgress />
+          <p>Sæki viðburð...</p>
+        </Container>
+      </Fragment>
     );
   }
 
@@ -74,7 +80,11 @@ class Event extends PureComponent {
   }
 
   render() {
-    const { event, error, classes } = this.props;
+    const { event, error, classes, loading } = this.props;
+
+    if (loading) {
+      return this.renderLoading();
+    }
 
     if (error || !event) {
       return <NoData textCenter={false} text="Við fundum engan viðburð." />;
@@ -99,54 +109,57 @@ class Event extends PureComponent {
     }
 
     return (
-      <Container className={s.containerExtra}>
-        {img && (
-          <CardMedia
-            alt={title}
-            title={title}
-            className={s.media}
-            image={img}
-          />
-        )}
-        <Typography gutterBottom variant="h6" className={classes.title}>
-          {title}
-        </Typography>
-        <Typography color="textSecondary" component="span">
-          {formatDate(start_date, false)}
-          {` frá kl. ${start_date_details.hour}:${
-            start_date_details.minutes
-          }`}{" "}
-          til
-          {` ${end_date_details.hour}:${end_date_details.minutes}`}
-        </Typography>
-        {event.venue.address && (
+      <Fragment>
+        <BannerSmall text={title} />
+        <Container className={s.containerExtra}>
+          {img && (
+            <CardMedia
+              alt={title}
+              title={title}
+              className={s.media}
+              image={img}
+            />
+          )}
+          <Typography gutterBottom variant="h6" className={classes.title}>
+            {title}
+          </Typography>
           <Typography color="textSecondary" component="span">
-            Staðsetning: {event.venue.address}
+            {formatDate(start_date, false)}
+            {` frá kl. ${start_date_details.hour}:${
+              start_date_details.minutes
+            }`}{" "}
+            til
+            {` ${end_date_details.hour}:${end_date_details.minutes}`}
           </Typography>
-        )}
-        <div>
-          <Typography component="article">
-            <span dangerouslySetInnerHTML={{ __html: description }} />
-          </Typography>
-          <div className={s.buttonsContainer}>
-            <Button color="primary" onClick={this.backButtonHandler}>
-              Til baka
-            </Button>
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=https://www.glima.is/vidburdir/${
-                event.id
-              }`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={classes.noLink}
-            >
-              <Button size="small" color="primary">
-                <FacbookIcon className={s.facebookIcon} /> Deila á Facebook
+          {event.venue.address && (
+            <Typography color="textSecondary" component="span">
+              Staðsetning: {event.venue.address}
+            </Typography>
+          )}
+          <div>
+            <Typography component="article">
+              <span dangerouslySetInnerHTML={{ __html: description }} />
+            </Typography>
+            <div className={s.buttonsContainer}>
+              <Button color="primary" onClick={this.backButtonHandler}>
+                Til baka
               </Button>
-            </a>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=https://www.glima.is/vidburdir/${
+                  event.id
+                }`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={classes.noLink}
+              >
+                <Button size="small" color="primary">
+                  <FacbookIcon className={s.facebookIcon} /> Deila á Facebook
+                </Button>
+              </a>
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </Fragment>
     );
   }
 }
@@ -158,10 +171,11 @@ class Event extends PureComponent {
  */
 function mapStateToProps(state) {
   const {
-    events: { event, error }
+    events: { event, error, loading }
   } = state;
 
   return {
+    loading,
     event,
     error
   };
@@ -175,7 +189,7 @@ function mapStateToProps(state) {
  */
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({ getEvent }, dispatch)
+    actions: bindActionCreators({ getEvent, setEventsLoading }, dispatch)
   };
 }
 

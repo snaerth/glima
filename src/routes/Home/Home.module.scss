@@ -19,6 +19,7 @@
 
 .postsContainer,
 .eventsContainer {
+  padding: 20px 0;
   width: 100%;
 }
 
@@ -31,17 +32,21 @@
 }
 
 .supporters {
+  padding: $gutter * 2 0;
   background-color: $color-white;
+}
+
+.instagram {
+  padding: $gutter * 2 0;
+  background-color: $color-grey;
 }
 
 @media only screen and (min-width: $page-width-desktop) {
   .container {
     padding: 30px 0 50px;
+    flex-direction: row;
   }
-}
 
-@media only screen and (min-width: $page-width-desktop) {
-  .container,
   .containerFlex {
     flex-direction: row;
   }
@@ -53,6 +58,11 @@
 
   .eventsContainer {
     width: calc(35% - 45px);
+  }
+
+  .supporters,
+  .instagram {
+    padding: $gutter * 4 0;
   }
 }
 
