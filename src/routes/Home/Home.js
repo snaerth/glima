@@ -107,7 +107,11 @@ class Home extends PureComponent {
           </div>
         )}
         {instagramData && (
-          <div className={s.instagram}>
+          <div
+            className={classNames(s.instagram, {
+              [s.whiteBackground]: newsOnly
+            })}
+          >
             <Container className={s.supportersContainer}>
               <Instagram
                 data={instagramData}

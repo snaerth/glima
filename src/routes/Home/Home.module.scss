@@ -41,6 +41,10 @@
   background-color: $color-grey;
 }
 
+.whiteBackground {
+  background-color: $color-white;
+}
+
 @media only screen and (min-width: $page-width-desktop) {
   .container {
     padding: 30px 0 50px;
