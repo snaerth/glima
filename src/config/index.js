@@ -7,7 +7,7 @@ module.exports = {
   PAGES_PER_PAGE: 100,
   PAGES_SESSION_CACHE: false,
   // Posts
-  POSTS_PER_PAGE: 3,
+  POSTS_PER_PAGE: 5,
   // Events
   EVENTS_PER_PAGE: 5,
   VISIBLE_EVENTS: 5,
