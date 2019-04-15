@@ -2,8 +2,8 @@ import React, { PureComponent } from "react";
 import Container from "../../components/Container";
 import { ReactComponent as FacbookIcon } from "../../assets/img/facebook.svg";
 import { ReactComponent as InstagramIcon } from "../../assets/img/instagram.svg";
-import BannerImage from "../../assets/img/banner.png";
-import BannerImageWebP from "../../assets/img/banner.webp";
+import BannerImage from "../../assets/img/banner2.png";
+import BannerImageWebP from "../../assets/img/banner2.webp";
 import s from "./Banner.module.scss";
 
 // Check if webp is supported
