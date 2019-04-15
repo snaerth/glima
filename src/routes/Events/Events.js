@@ -112,7 +112,7 @@ class Events extends PureComponent {
     const { events, classes, totalPages, page, loading, error } = this.props;
 
     if (loading) {
-      return <Loading text="Sæki frétt..." />;
+      return <Loading text="Sæki viðburð..." />;
     }
 
     if (error || !events || events.length === 0) {
