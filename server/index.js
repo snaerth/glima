@@ -20,9 +20,8 @@ const {
 const { API_URL } = config;
 const server = express();
 const port = process.env.PORT || 5000;
-let defaultHtml = null;
-let html = null;
 const STATUS_OK = 200;
+const SERVER_ERROR = 500;
 
 server.use(
   express.static(path.resolve(process.cwd(), "build"), {
@@ -41,6 +40,7 @@ server.get("/frett/:slug/:id", async (req, res) => {
 
   try {
     const { data } = await axois.get(`${API_URL}/wp/v2/posts/${id}?_embed`);
+    let html = await getHTML();
 
     if (data instanceof Error) {
       return res.status(STATUS_OK).send(html);
@@ -53,7 +53,7 @@ server.get("/frett/:slug/:id", async (req, res) => {
     return res.status(STATUS_OK).send(html);
   } catch (error) {
     // Send cached html file anyway
-    return res.status(STATUS_OK).send(html);
+    return res.sendFile(getHtmlPath());
   }
 });
 
@@ -71,6 +71,8 @@ server.get("/vidburdir/:id", async (req, res) => {
       `${API_URL}/tribe/events/v1/events?id=${id}`
     );
 
+    let html = await getHTML();
+
     if (data instanceof Error) {
       return res.status(STATUS_OK).send(html);
     }
@@ -85,38 +87,48 @@ server.get("/vidburdir/:id", async (req, res) => {
     return res.status(STATUS_OK).send(html);
   } catch (error) {
     // Send cached html file anyway
+    return res.sendFile(getHtmlPath());
+  }
+});
+
+const title = "Glímusamband Íslands - íslensk glíma";
+const description =
+  "Glíman, þjóðaríþrótt Íslendinga, hefur lifað með þjóðinni allt frá Þjóðveldisöld. Íslendingum ber nauðsyn til að undirstrika sérstöðu sína og þar liggur beinast";
+
+server.get("*", async (req, res) => {
+  try {
+    let html = await getHTML();
+
+    // Replace the special strings from html with default server generated strings
+    html = html.replace(/\$OG_URL/g, fullUrl(req));
+    // Replace the special strings from html with default server generated strings
+    html = html.replace(/\$OG_TITLE/g, title);
+    html = html.replace(/%TITLE%/g, title);
+    html = html.replace(/\$OG_DESCRIPTION/g, description);
+    html = html.replace(/\$DESCRIPTION/g, description);
+    html = html.replace(/\$OG_IMAGE/g, "/img/glima.jpg");
+
     return res.status(STATUS_OK).send(html);
+  } catch (error) {
+    return res.status(SERVER_ERROR).send("Server error");
   }
 });
 
-server.get("*", (req, res) => {
-  // Replace the special strings from html with default server generated strings
-  defaultHtml = defaultHtml.replace(/\$OG_URL/g, fullUrl(req));
-  res.status(STATUS_OK).send(defaultHtml);
-});
+/**
+ * Get contents of index.html
+ */
+function getHTML() {
+  return new Promise((resolve, reject) => {
+    // Read in the index.html file
+    fs.readFile(getHtmlPath(), "utf8", (err, data) => {
+      if (err) {
+        return reject(err);
+      }
 
-// Read in the index.html file
-fs.readFile(getHtmlPath(), "utf8", (err, data) => {
-  if (err) {
-    return console.error(err);
-  }
-  // Cache file data in defaultHtml variable
-  defaultHtml = data;
+      return resolve(data);
+    });
+  });
+}
 
-  const title = "Glímusamband Íslands - íslensk glíma";
-  const description =
-    "Glíman, þjóðaríþrótt Íslendinga, hefur lifað með þjóðinni allt frá Þjóðveldisöld. Íslendingum ber nauðsyn til að undirstrika sérstöðu sína og þar liggur beinast";
-
-  // Replace the special strings from html with default server generated strings
-  defaultHtml = defaultHtml.replace(/\$OG_TITLE/g, title);
-  defaultHtml = defaultHtml.replace(/%TITLE%/g, title);
-  defaultHtml = defaultHtml.replace(/\$OG_DESCRIPTION/g, description);
-  defaultHtml = defaultHtml.replace(/\$DESCRIPTION/g, description);
-  defaultHtml = defaultHtml.replace(/\$OG_IMAGE/g, "/img/glima.jpg");
-
-  // Cache modifyed file data in html variable
-  html = data;
-
-  // Start the server
-  server.listen(port, () => console.log(`Listening on port ${port}`));
-});
+// Start the server
+server.listen(port, () => console.log(`Listening on port ${port}`));
