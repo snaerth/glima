@@ -75,11 +75,14 @@ function replaceSocialMetaTags(html, data, type) {
   }
 
   if (imageUrl) {
-    html = html.replace(/\$OG_IMAGE/g, imageUrl);
+    html = html.replace(/\$OG_IMAGE/g, imageUrl || "/img/glima.jpg");
   }
 
   html = html.replace(/\$OG_TITLE/g, titleDesc);
-  html = html.replace(/\$OG_DESCRIPTION/g, stripHtmlFromString(description));
+  html = html.replace(/%TITLE%/g, `Glímusamband Íslands - ${titleDesc}`);
+  const desc = stripHtmlFromString(description);
+  html = html.replace(/\$DESCRIPTION/g, desc);
+  html = html.replace(/\$OG_DESCRIPTION/g, desc);
 
   return html;
 }

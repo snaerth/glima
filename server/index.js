@@ -40,9 +40,7 @@ server.get("/frett/:slug/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const { data } = await axois.get(
-      `${API_URL}/wp/v2/posts/${id}?_embed`
-    );
+    const { data } = await axois.get(`${API_URL}/wp/v2/posts/${id}?_embed`);
 
     if (data instanceof Error) {
       return res.status(STATUS_OK).send(html);
@@ -111,7 +109,9 @@ fs.readFile(getHtmlPath(), "utf8", (err, data) => {
 
   // Replace the special strings from html with default server generated strings
   defaultHtml = defaultHtml.replace(/\$OG_TITLE/g, title);
+  defaultHtml = defaultHtml.replace(/%TITLE%/g, title);
   defaultHtml = defaultHtml.replace(/\$OG_DESCRIPTION/g, description);
+  defaultHtml = defaultHtml.replace(/\$DESCRIPTION/g, description);
   defaultHtml = defaultHtml.replace(/\$OG_IMAGE/g, "/img/glima.jpg");
 
   // Cache modifyed file data in html variable
