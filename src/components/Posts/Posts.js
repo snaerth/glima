@@ -99,7 +99,7 @@ class Posts extends PureComponent {
     if (totalPages === 1) {
       history.push("/frettir");
     } else {
-      history.push("/frettir/?page=2");
+      history.push("/frettir/?page=1");
     }
   };
 
@@ -121,7 +121,6 @@ class Posts extends PureComponent {
 
   render() {
     const {
-      posts,
       classes,
       totalPages,
       page,
@@ -131,6 +130,7 @@ class Posts extends PureComponent {
       error,
       className
     } = this.props;
+    let { posts } = this.props;
 
     if (loading) {
       return <Loading text="Sæki fréttir..." />;
@@ -143,6 +143,10 @@ class Posts extends PureComponent {
     if (posts && posts.length > 0) {
       const isLastPostIdx = posts.length - 1;
       const showMoreButton = moreButton && totalPages > 1;
+
+      if (showMoreButton) {
+        posts = posts.slice(0, 2);
+      }
 
       return (
         <div className={className}>
