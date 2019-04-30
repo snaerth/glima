@@ -1,30 +1,35 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import { Mobile, Tablet, Desktop } from "../Responsive";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import { Mobile, Tablet, Desktop } from '../Responsive';
 
 const styles = {
   root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden"
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden'
   },
   gridList: {
     width: 992,
-    height: "auto"
+    height: 'auto'
   },
   img: {
-    cursor: "pointer"
+    cursor: 'pointer'
   }
 };
 
 class ImageGridList extends PureComponent {
   imageClickHandler = e => {
     const { onClick } = this.props;
-    onClick({ src: e.target.src, title: e.target.alt });
+
+    onClick({
+      src: e.target.src,
+      title: e.target.alt,
+      id: e.target.getAttribute('data-id')
+    });
   };
 
   renderPhotos() {
@@ -33,6 +38,7 @@ class ImageGridList extends PureComponent {
     return photos.map(photo => (
       <GridListTile key={photo.id} cols={1}>
         <img
+          data-id={photo.id}
           src={photo.src}
           alt={photo.title}
           onClick={this.imageClickHandler}
