@@ -26,7 +26,7 @@ module.exports = {
     body: ""
   },
   phone: {
-    number: "+3547791324",
-    formatted: "779-1324"
+    number: "+3547897989",
+    formatted: "789-7989"
   }
 };
